@@ -1,4 +1,5 @@
 import { Item } from "@/features/sidebar/components/nav-main";
+import { makeSlug } from "@/lib/generateStaticParams";
 import { ResponseType } from "@/types/ResponseType";
 import { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
 
@@ -22,7 +23,7 @@ export async function getSideBarData(): Promise<Item[]> {
       // If a single category fails, return an empty section instead of throwing
       return {
         title: key.charAt(0).toUpperCase() + key.slice(1),
-        url: url,
+        url: makeSlug(),
         items: [],
       } satisfies Item;
     }
@@ -32,14 +33,26 @@ export async function getSideBarData(): Promise<Item[]> {
     // Many SWAPI endpoints return a paginated response with `results`.
     const results = json.results;
 
-    const items = results.map((entity) => ({
-      title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
-      url: entity.url ?? url,
-    }));
+    const items = results.map((entity) => {
+
+      let name = "";
+      if ("name" in entity && typeof entity.name === "string") {
+        name = entity.name;
+      } else if ("title" in entity && typeof entity.title === "string") {
+        name = entity.title;
+      }
+
+      return {
+        title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
+        url: makeSlug(key) + "/" + makeSlug(name),
+      }
+    });
+
+
 
     return {
       title: key.charAt(0).toUpperCase() + key.slice(1),
-      url: url,
+      url: "/" + makeSlug(key),
       items,
     } satisfies Item;
   });

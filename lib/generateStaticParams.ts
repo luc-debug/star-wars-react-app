@@ -13,16 +13,7 @@ export async function generateStaticParams<T extends StarWarsEntity>(
 
     const results = await Promise.all(promises);
 
-    // Hilfsfunktion: name -> slug (normalize, lowercase, non-alnum -> dash, trim dashes)
-    const makeSlug = (input?: string) => {
-        if (!input || typeof input !== "string") return "";
-        return input
-            .toLowerCase()
-            .normalize("NFKD") // entferne diakritische Zeichen
-            .replace(/[\u0300-\u036f]/g, "") // komb. diakritika löschen
-            .replace(/[^a-z0-9]+/g, "-") // alles Nicht-alnum -> '-'
-            .replace(/^-+|-+$/g, ""); // führende/folgende '-' entfernen
-    };
+
 
     // Alle Personen sammeln, slug aus name bilden, filtern, deduplizieren
     const entries = results
@@ -44,3 +35,14 @@ export async function generateStaticParams<T extends StarWarsEntity>(
 
     return unique.map((e) => ({ slug: e.slug }));
 }
+
+// Hilfsfunktion: name -> slug (normalize, lowercase, non-alnum -> dash, trim dashes)
+export const makeSlug = (input?: string) => {
+    if (!input || typeof input !== "string") return "";
+    return input
+        .toLowerCase()
+        .normalize("NFKD") // entferne diakritische Zeichen
+        .replace(/[\u0300-\u036f]/g, "") // komb. diakritika löschen
+        .replace(/[^a-z0-9]+/g, "-") // alles Nicht-alnum -> '-'
+        .replace(/^-+|-+$/g, ""); // führende/folgende '-' entfernen
+};
