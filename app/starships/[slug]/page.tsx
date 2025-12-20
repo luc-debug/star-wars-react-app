@@ -1,8 +1,3 @@
-import { People } from "@/features/peoples/types/People";
-import { ResponseType } from "@/types/ResponseType";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { PeopleDetail } from "@/features/peoples/components/people-detail";
 import { DetailView } from "@/components/detail-view";
 import { Starship } from "@/features/starships/types/starship";
 import { User, Ruler, Scale } from "lucide-react";

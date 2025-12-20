@@ -1,42 +1,24 @@
+import { DetailView } from "@/components/detail-view";
 import { People } from "@/features/peoples/types/People";
-import { ResponseType } from "@/types/ResponseType";
-import { PeopleDetail } from "@/features/peoples/components/people-detail";
+import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
+import { searchItem } from "@/lib/searchItem";
+import { connect } from "http2";
+import {
+  Ruler,
+  Scale,
+  Calendar,
+  User,
+  Scissors,
+  Palette,
+  Eye,
+  Film,
+  Rocket,
+  Car,
+  Globe,
+} from "lucide-react";
 
 export async function generateStaticParams() {
-  const promises = Array.from({ length: 9 }).map(async (_, index) => {
-    const res = await fetch(
-      `https://swapi.py4e.com/api/people/?page=${index + 1}`
-    );
-    return (await res.json()) as ResponseType<People[]>;
-  });
-
-  const results = await Promise.all(promises);
-
-  // Hilfsfunktion: name -> slug (normalize, lowercase, non-alnum -> dash, trim dashes)
-  const makeSlug = (input?: string) => {
-    if (!input || typeof input !== "string") return "";
-    return input
-      .toLowerCase()
-      .normalize("NFKD") // entferne diakritische Zeichen
-      .replace(/[\u0300-\u036f]/g, "") // komb. diakritika löschen
-      .replace(/[^a-z0-9]+/g, "-") // alles Nicht-alnum -> '-'
-      .replace(/^-+|-+$/g, ""); // führende/folgende '-' entfernen
-  };
-
-  // Alle Personen sammeln, slug aus name bilden, filtern, deduplizieren
-  const entries = results
-    .flatMap((data) => data.results || [])
-    .map((person: People) => {
-      const name = person?.name ?? "";
-      const slug = makeSlug(name);
-      return { slug };
-    })
-    .filter((p) => p.slug && p.slug !== "0");
-
-  // Duplikate nach slug entfernen (letzten Eintrag behalten)
-  const unique = Array.from(new Map(entries.map((e) => [e.slug, e])).values());
-
-  return unique.map((e) => ({ slug: e.slug }));
+  return generatePeopleStaticParams<People>("people");
 }
 
 // Multiple versions of this page will be statically generated
@@ -44,8 +26,53 @@ export async function generateStaticParams() {
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string; name: string }>;
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <PeopleDetail slug={slug} />;
+  const person = await searchItem<People>(slug, "people");
+
+  const statItems = [
+    { label: "Height", value: person.height, unit: "cm", icon: Ruler },
+    { label: "Mass", value: person.mass, unit: "kg", icon: Scale },
+    { label: "Birth Year", value: person.birth_year, icon: Calendar },
+    { label: "Gender", value: person.gender, icon: User },
+  ];
+
+  const appearanceItems = [
+    { label: "Hair Color", value: person.hair_color, icon: Scissors },
+    { label: "Skin Color", value: person.skin_color, icon: Palette },
+    { label: "Eye Color", value: person.eye_color, icon: Eye },
+  ];
+
+  const connectionItems = [
+    {
+      label: "Films",
+      count: person.films?.length || 0,
+      icon: Film,
+    },
+    {
+      label: "Vehicles",
+      count: person.vehicles?.length || 0,
+      icon: Car,
+    },
+    {
+      label: "Starships",
+      count: person.starships?.length || 0,
+      icon: Rocket,
+    },
+  ];
+
+  const additionalSections = [
+    { title: "Homeworld", icon: Globe, content: person.homeworld },
+  ];
+
+  return (
+    <DetailView
+      appearanceItems={appearanceItems}
+      title={person?.name || "person Details"}
+      connectionItems={connectionItems}
+      additionalSections={additionalSections}
+      statItems={statItems}
+    />
+  );
 }
