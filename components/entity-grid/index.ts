@@ -4,8 +4,6 @@ export { EntityGridClient } from "./entity-grid-client";
 export { EntityGridSkeleton } from "./entity-grid-skeleton";
 export {
   entityConfigs,
-  getEntityDisplayName,
-  getEntityValue,
   type EntityConfig,
   type FieldConfig,
   type BadgeConfig,

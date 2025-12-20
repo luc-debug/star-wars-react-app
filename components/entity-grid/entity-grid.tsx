@@ -1,4 +1,3 @@
-"use client";
 
 import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 import { ResponseType } from "@/types/ResponseType";

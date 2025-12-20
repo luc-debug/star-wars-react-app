@@ -13,7 +13,8 @@ import { StarWarsEntity, StarWarsEntities } from "@/types/Root";
 export interface FieldConfig {
   key: string;
   label: string;
-  format?: (value: unknown) => string;
+  /** optional suffix to append when displaying the value (e.g. 'cm', 'kg') */
+  formatSuffix?: string;
 }
 
 /**
@@ -30,7 +31,13 @@ export interface BadgeConfig {
 export interface FilterConfig {
   key: string;
   label: string;
-  getOptions: (entities: StarWarsEntity[]) => string[];
+  /**
+   * The entity field to read values from for this filter.
+   * If `split` is true the field will be split by `delimiter`.
+   */
+  optionKey: string;
+  split?: boolean;
+  delimiter?: string;
 }
 
 /**
@@ -39,7 +46,12 @@ export interface FilterConfig {
 export interface SortConfig {
   key: string;
   label: string;
-  compare: (a: StarWarsEntity, b: StarWarsEntity) => number;
+  /** the entity field this sort option targets */
+  sortKey?: string;
+  /** data type for comparison */
+  type?: "string" | "number" | "date";
+  /** default direction */
+  direction?: "asc" | "desc";
 }
 
 /**
@@ -62,20 +74,6 @@ export interface EntityConfig {
 /**
  * Helper to get display name (name or title for films)
  */
-export function getEntityDisplayName(entity: StarWarsEntity): string {
-  if ("title" in entity) {
-    return (entity as FilmType).title;
-  }
-  return (entity as { name: string }).name;
-}
-
-/**
- * Helper to get value by key from entity
- */
-export function getEntityValue(entity: StarWarsEntity, key: string): unknown {
-  return (entity as Record<string, unknown>)[key];
-}
-
 /**
  * Entity configurations for all Star Wars entity types
  */
@@ -88,8 +86,8 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
     apiEndpoint: "https://swapi.py4e.com/api/people",
     nameKey: "name",
     fields: [
-      { key: "height", label: "Height", format: (v) => `${v} cm` },
-      { key: "mass", label: "Mass", format: (v) => `${v} kg` },
+      { key: "height", label: "Height", formatSuffix: "cm" },
+      { key: "mass", label: "Mass", formatSuffix: "kg" },
       { key: "eye_color", label: "Eye Color" },
       { key: "hair_color", label: "Hair Color" },
     ],
@@ -98,50 +96,14 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
       { key: "birth_year", variant: "outline" },
     ],
     filters: [
-      {
-        key: "gender",
-        label: "Gender",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as People).gender).filter(Boolean)
-          ),
-        ],
-      },
-      {
-        key: "eye_color",
-        label: "Eye Color",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as People).eye_color).filter(Boolean)
-          ),
-        ],
-      },
+      { key: "gender", label: "Gender", optionKey: "gender" },
+      { key: "eye_color", label: "Eye Color", optionKey: "eye_color", split: true, delimiter: "," },
     ],
     sortOptions: [
-      {
-        key: "name",
-        label: "Name (A-Z)",
-        compare: (a, b) =>
-          getEntityDisplayName(a).localeCompare(getEntityDisplayName(b)),
-      },
-      {
-        key: "name_desc",
-        label: "Name (Z-A)",
-        compare: (a, b) =>
-          getEntityDisplayName(b).localeCompare(getEntityDisplayName(a)),
-      },
-      {
-        key: "height",
-        label: "Height",
-        compare: (a, b) =>
-          parseInt((a as People).height) - parseInt((b as People).height),
-      },
-      {
-        key: "mass",
-        label: "Mass",
-        compare: (a, b) =>
-          parseInt((a as People).mass) - parseInt((b as People).mass),
-      },
+      { key: "name", label: "Name (A-Z)", sortKey: "name", type: "string", direction: "asc" },
+      { key: "name_desc", label: "Name (Z-A)", sortKey: "name", type: "string", direction: "desc" },
+      { key: "height", label: "Height", sortKey: "height", type: "number" },
+      { key: "mass", label: "Mass", sortKey: "mass", type: "number" },
     ],
     searchKeys: ["name", "gender", "birth_year"],
   },
@@ -163,55 +125,14 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
       { key: "terrain", variant: "outline" },
     ],
     filters: [
-      {
-        key: "climate",
-        label: "Climate",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.flatMap((e) =>
-              (e as Planet).climate.split(",").map((c) => c.trim())
-            )
-          ),
-        ],
-      },
-      {
-        key: "terrain",
-        label: "Terrain",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.flatMap((e) =>
-              (e as Planet).terrain.split(",").map((t) => t.trim())
-            )
-          ),
-        ],
-      },
+      { key: "climate", label: "Climate", optionKey: "climate", split: true, delimiter: "," },
+      { key: "terrain", label: "Terrain", optionKey: "terrain", split: true, delimiter: "," },
     ],
     sortOptions: [
-      {
-        key: "name",
-        label: "Name (A-Z)",
-        compare: (a, b) =>
-          getEntityDisplayName(a).localeCompare(getEntityDisplayName(b)),
-      },
-      {
-        key: "name_desc",
-        label: "Name (Z-A)",
-        compare: (a, b) =>
-          getEntityDisplayName(b).localeCompare(getEntityDisplayName(a)),
-      },
-      {
-        key: "diameter",
-        label: "Diameter",
-        compare: (a, b) =>
-          parseInt((a as Planet).diameter) - parseInt((b as Planet).diameter),
-      },
-      {
-        key: "population",
-        label: "Population",
-        compare: (a, b) =>
-          parseInt((a as Planet).population) -
-          parseInt((b as Planet).population),
-      },
+      { key: "name", label: "Name (A-Z)", sortKey: "name", type: "string", direction: "asc" },
+      { key: "name_desc", label: "Name (Z-A)", sortKey: "name", type: "string", direction: "desc" },
+      { key: "diameter", label: "Diameter", sortKey: "diameter", type: "number" },
+      { key: "population", label: "Population", sortKey: "population", type: "number" },
     ],
     searchKeys: ["name", "climate", "terrain"],
   },
@@ -230,53 +151,14 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
     ],
     badges: [{ key: "starship_class", variant: "secondary" }],
     filters: [
-      {
-        key: "starship_class",
-        label: "Class",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as Starship).starship_class).filter(Boolean)
-          ),
-        ],
-      },
-      {
-        key: "manufacturer",
-        label: "Manufacturer",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.flatMap((e) =>
-              (e as Starship).manufacturer.split(",").map((m) => m.trim())
-            )
-          ),
-        ],
-      },
+      { key: "starship_class", label: "Class", optionKey: "starship_class" },
+      { key: "manufacturer", label: "Manufacturer", optionKey: "manufacturer", split: true, delimiter: "," },
     ],
     sortOptions: [
-      {
-        key: "name",
-        label: "Name (A-Z)",
-        compare: (a, b) =>
-          getEntityDisplayName(a).localeCompare(getEntityDisplayName(b)),
-      },
-      {
-        key: "name_desc",
-        label: "Name (Z-A)",
-        compare: (a, b) =>
-          getEntityDisplayName(b).localeCompare(getEntityDisplayName(a)),
-      },
-      {
-        key: "crew",
-        label: "Crew Size",
-        compare: (a, b) =>
-          parseInt((a as Starship).crew) - parseInt((b as Starship).crew),
-      },
-      {
-        key: "length",
-        label: "Length",
-        compare: (a, b) =>
-          parseFloat((a as Starship).length) -
-          parseFloat((b as Starship).length),
-      },
+      { key: "name", label: "Name (A-Z)", sortKey: "name", type: "string", direction: "asc" },
+      { key: "name_desc", label: "Name (Z-A)", sortKey: "name", type: "string", direction: "desc" },
+      { key: "crew", label: "Crew Size", sortKey: "crew", type: "number" },
+      { key: "length", label: "Length", sortKey: "length", type: "number" },
     ],
     searchKeys: ["name", "model", "manufacturer", "starship_class"],
   },
@@ -295,42 +177,13 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
     ],
     badges: [{ key: "episode_id", variant: "secondary" }],
     filters: [
-      {
-        key: "director",
-        label: "Director",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as FilmType).director).filter(Boolean)
-          ),
-        ],
-      },
+      { key: "director", label: "Director", optionKey: "director" },
     ],
     sortOptions: [
-      {
-        key: "title",
-        label: "Title (A-Z)",
-        compare: (a, b) =>
-          getEntityDisplayName(a).localeCompare(getEntityDisplayName(b)),
-      },
-      {
-        key: "title_desc",
-        label: "Title (Z-A)",
-        compare: (a, b) =>
-          getEntityDisplayName(b).localeCompare(getEntityDisplayName(a)),
-      },
-      {
-        key: "episode_id",
-        label: "Episode",
-        compare: (a, b) =>
-          (a as FilmType).episode_id - (b as FilmType).episode_id,
-      },
-      {
-        key: "release_date",
-        label: "Release Date",
-        compare: (a, b) =>
-          new Date((a as FilmType).release_date).getTime() -
-          new Date((b as FilmType).release_date).getTime(),
-      },
+      { key: "title", label: "Title (A-Z)", sortKey: "title", type: "string", direction: "asc" },
+      { key: "title_desc", label: "Title (Z-A)", sortKey: "title", type: "string", direction: "desc" },
+      { key: "episode_id", label: "Episode", sortKey: "episode_id", type: "number" },
+      { key: "release_date", label: "Release Date", sortKey: "release_date", type: "date" },
     ],
     searchKeys: ["title", "director", "producer"],
   },
@@ -353,45 +206,13 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
       { key: "designation", variant: "outline" },
     ],
     filters: [
-      {
-        key: "classification",
-        label: "Classification",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as Species).classification).filter(Boolean)
-          ),
-        ],
-      },
-      {
-        key: "designation",
-        label: "Designation",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as Species).designation).filter(Boolean)
-          ),
-        ],
-      },
+      { key: "classification", label: "Classification", optionKey: "classification" },
+      { key: "designation", label: "Designation", optionKey: "designation" },
     ],
     sortOptions: [
-      {
-        key: "name",
-        label: "Name (A-Z)",
-        compare: (a, b) =>
-          getEntityDisplayName(a).localeCompare(getEntityDisplayName(b)),
-      },
-      {
-        key: "name_desc",
-        label: "Name (Z-A)",
-        compare: (a, b) =>
-          getEntityDisplayName(b).localeCompare(getEntityDisplayName(a)),
-      },
-      {
-        key: "average_lifespan",
-        label: "Lifespan",
-        compare: (a, b) =>
-          parseInt((a as Species).average_lifespan) -
-          parseInt((b as Species).average_lifespan),
-      },
+      { key: "name", label: "Name (A-Z)", sortKey: "name", type: "string", direction: "asc" },
+      { key: "name_desc", label: "Name (Z-A)", sortKey: "name", type: "string", direction: "desc" },
+      { key: "average_lifespan", label: "Lifespan", sortKey: "average_lifespan", type: "number" },
     ],
     searchKeys: ["name", "classification", "designation", "language"],
   },
@@ -410,53 +231,14 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
     ],
     badges: [{ key: "vehicle_class", variant: "secondary" }],
     filters: [
-      {
-        key: "vehicle_class",
-        label: "Class",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.map((e) => (e as Vehicle).vehicle_class).filter(Boolean)
-          ),
-        ],
-      },
-      {
-        key: "manufacturer",
-        label: "Manufacturer",
-        getOptions: (entities) => [
-          ...new Set(
-            entities.flatMap((e) =>
-              (e as Vehicle).manufacturer.split(",").map((m) => m.trim())
-            )
-          ),
-        ],
-      },
+      { key: "vehicle_class", label: "Class", optionKey: "vehicle_class" },
+      { key: "manufacturer", label: "Manufacturer", optionKey: "manufacturer", split: true, delimiter: "," },
     ],
     sortOptions: [
-      {
-        key: "name",
-        label: "Name (A-Z)",
-        compare: (a, b) =>
-          getEntityDisplayName(a).localeCompare(getEntityDisplayName(b)),
-      },
-      {
-        key: "name_desc",
-        label: "Name (Z-A)",
-        compare: (a, b) =>
-          getEntityDisplayName(b).localeCompare(getEntityDisplayName(a)),
-      },
-      {
-        key: "crew",
-        label: "Crew Size",
-        compare: (a, b) =>
-          parseInt((a as Vehicle).crew) - parseInt((b as Vehicle).crew),
-      },
-      {
-        key: "length",
-        label: "Length",
-        compare: (a, b) =>
-          parseFloat((a as Vehicle).length) -
-          parseFloat((b as Vehicle).length),
-      },
+      { key: "name", label: "Name (A-Z)", sortKey: "name", type: "string", direction: "asc" },
+      { key: "name_desc", label: "Name (Z-A)", sortKey: "name", type: "string", direction: "desc" },
+      { key: "crew", label: "Crew Size", sortKey: "crew", type: "number" },
+      { key: "length", label: "Length", sortKey: "length", type: "number" },
     ],
     searchKeys: ["name", "model", "manufacturer", "vehicle_class"],
   },
