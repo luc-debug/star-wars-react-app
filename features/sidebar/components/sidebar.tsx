@@ -43,9 +43,9 @@ export async function Sidebar({ children }: { children: React.ReactNode }) {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-        </header>  {children}
+        </header>
+        <main className="py-4 px-6">{children}</main>
       </SidebarInset>
-    
     </SidebarProvider>
   );
 }
