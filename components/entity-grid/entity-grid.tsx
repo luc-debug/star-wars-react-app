@@ -5,12 +5,6 @@ import { ResponseType } from "@/types/ResponseType";
 import { EntityGridClient } from "./entity-grid-client";
 import { entityConfigs, EntityConfig } from "./entity-config";
 
-interface EntityGridProps {
-  entityType: StarWarsEntities;
-  /** Optional: Override specific config options */
-  configOverrides?: Partial<EntityConfig>;
-}
-
 /**
  * Fetches all pages of entities from the SWAPI
  */
@@ -44,28 +38,17 @@ async function fetchAllEntities(
  * @example
  * // Display planets
  * <EntityGrid entityType="planets" />
- *
- * @example
- * // Display people with custom config
- * <EntityGrid
- *   entityType="people"
- *   configOverrides={{ title: "Heroes" }}
- * />
  */
 export async function EntityGrid({
   entityType,
-  configOverrides,
-}: EntityGridProps) {
-  const baseConfig = entityConfigs[entityType];
+}: {
+  entityType: StarWarsEntities;
+}) {
+  const config = entityConfigs[entityType];
 
-  if (!baseConfig) {
+  if (!config) {
     throw new Error(`Unknown entity type: ${entityType}`);
   }
-
-  const config: EntityConfig = {
-    ...baseConfig,
-    ...configOverrides,
-  };
 
   const entities = await fetchAllEntities(config.apiEndpoint);
 
