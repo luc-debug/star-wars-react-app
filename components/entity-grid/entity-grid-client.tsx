@@ -12,6 +12,7 @@ import {
   getEntityDisplayName,
   getEntityValue,
 } from "./entity-config";
+import * as LucideIcons from 'lucide-react';
 
 interface EntityGridClientProps {
   entities: StarWarsEntity[];
@@ -106,6 +107,10 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
   const Icon = config.icon;
   const hasActiveFilters =
     Object.keys(activeFilters).length > 0 || searchQuery.trim() !== "";
+
+  const IconComponent = LucideIcons[
+    config.icon as keyof typeof LucideIcons
+  ] as React.ComponentType<{ className?: string }>;
 
   return (
     <div className="space-y-4">
@@ -224,7 +229,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
             >
               <CardHeader>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <Icon className={`w-5 h-5 ${config.iconColor}`} />
+                  <IconComponent className={`w-5 h-5 ${config.iconColor}`} />
                   {getEntityDisplayName(entity)}
                 </CardTitle>
               </CardHeader>

@@ -48,7 +48,7 @@ export interface SortConfig {
 export interface EntityConfig {
   entityType: StarWarsEntities;
   title: string;
-  icon: LucideIcon;
+  icon: string;
   iconColor: string;
   apiEndpoint: string;
   nameKey: string;
@@ -83,7 +83,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
   people: {
     entityType: "people",
     title: "Characters",
-    icon: User,
+    icon: "User",
     iconColor: "text-primary",
     apiEndpoint: "https://swapi.py4e.com/api/people",
     nameKey: "name",
@@ -149,7 +149,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
   planets: {
     entityType: "planets",
     title: "Planets",
-    icon: Globe,
+    icon: "Globe",
     iconColor: "text-accent",
     apiEndpoint: "https://swapi.py4e.com/api/planets",
     nameKey: "name",
@@ -219,7 +219,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
   starships: {
     entityType: "starships",
     title: "Starships",
-    icon: Rocket,
+    icon: "Rocket",
     iconColor: "text-primary",
     apiEndpoint: "https://swapi.py4e.com/api/starships",
     nameKey: "name",
@@ -284,7 +284,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
   films: {
     entityType: "films",
     title: "Films",
-    icon: Film,
+    icon: "Film",
     iconColor: "text-yellow-500",
     apiEndpoint: "https://swapi.py4e.com/api/films",
     nameKey: "title",
@@ -338,7 +338,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
   species: {
     entityType: "species",
     title: "Species",
-    icon: Bug,
+    icon: "Bug",
     iconColor: "text-green-500",
     apiEndpoint: "https://swapi.py4e.com/api/species",
     nameKey: "name",
@@ -399,7 +399,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
   vehicles: {
     entityType: "vehicles",
     title: "Vehicles",
-    icon: Car,
+    icon: "Car",
     iconColor: "text-orange-500",
     apiEndpoint: "https://swapi.py4e.com/api/vehicles",
     nameKey: "name",
