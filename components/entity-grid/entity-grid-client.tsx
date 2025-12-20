@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -29,30 +29,23 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
   const [showFilters, setShowFilters] = useState(false);
 
   // Get filter options from data
-  const filterOptions = useMemo(() => {
-    const options: Record<string, SelectOption[]> = {};
-    config.filters.forEach((filter) => {
-      const values = filter.getOptions(entities);
-      options[filter.key] = [
-        { value: "", label: `All ${filter.label}` },
-        ...values.map((v) => ({ value: v, label: v })),
-      ];
-    });
-    return options;
-  }, [entities, config.filters]);
+  const filterOptions: Record<string, SelectOption[]> = {};
+  config.filters.forEach((filter) => {
+    const values = filter.getOptions(entities);
+    filterOptions[filter.key] = [
+      { value: "", label: `All ${filter.label}` },
+      ...values.map((v) => ({ value: v, label: v })),
+    ];
+  });
 
   // Sort options for select
-  const sortOptions: SelectOption[] = useMemo(
-    () =>
-      config.sortOptions.map((opt) => ({
-        value: opt.key,
-        label: opt.label,
-      })),
-    [config.sortOptions]
-  );
+  const sortOptions: SelectOption[] = config.sortOptions.map((opt) => ({
+    value: opt.key,
+    label: opt.label,
+  }));
 
   // Filter handler
-  const handleFilterChange = useCallback((key: string, value: string) => {
+  function handleFilterChange(key: string, value: string) {
     setActiveFilters((prev) => {
       if (value === "") {
         const next = { ...prev };
@@ -61,16 +54,16 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
       }
       return { ...prev, [key]: value };
     });
-  }, []);
+  }
 
   // Clear all filters
-  const clearFilters = useCallback(() => {
+  function clearFilters() {
     setActiveFilters({});
     setSearchQuery("");
-  }, []);
+  }
 
   // Filtered and sorted entities
-  const processedEntities = useMemo(() => {
+  const processedEntities = (() => {
     let result = [...entities];
 
     // Search
@@ -79,10 +72,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
       result = result.filter((entity) =>
         config.searchKeys.some((key) => {
           const value = getEntityValue(entity, key);
-          return (
-            value &&
-            String(value).toLowerCase().includes(query)
-          );
+          return value && String(value).toLowerCase().includes(query);
         })
       );
     }
@@ -111,7 +101,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
     }
 
     return result;
-  }, [entities, searchQuery, activeFilters, sortKey, config]);
+  })();
 
   const Icon = config.icon;
   const hasActiveFilters =
