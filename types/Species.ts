@@ -1,7 +1,7 @@
 /**
  * A species within the Star Wars universe
  */
-export interface People {
+export interface Species {
   /**
    * The ISO 8601 date format of the time that this resource was edited.
    */

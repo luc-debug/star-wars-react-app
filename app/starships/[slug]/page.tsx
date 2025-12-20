@@ -1,6 +1,16 @@
 import { DetailView } from "@/components/detail-view";
 import { Starship } from "@/types/Starship";
-import { User, Ruler, Scale } from "lucide-react";
+import {
+  Car,
+  Globe,
+  DollarSign,
+  Ruler,
+  User,
+  Rocket,
+  Film,
+  Users,
+  Calendar,
+} from "lucide-react";
 import { generateStaticParams as generateStarshipStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
 
@@ -15,67 +25,51 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const starship = await searchItem<Starship>(slug, "starships");
-
-  const appearanceItems = [
-    { label: "Model", value: starship?.model || "N/A", icon: User },
+  const statItems = [
+    { label: "Manufacturer", value: starship.manufacturer, icon: Globe },
     {
-      label: "Manufacturer",
-      value: starship?.manufacturer || "N/A",
+      label: "Cost",
+      value: starship.cost_in_credits,
+      unit: "cr",
+      icon: DollarSign,
+    },
+    { label: "Crew", value: starship.crew, icon: User },
+    {
+      label: "Max Speed",
+      value: starship.max_atmosphering_speed,
+      icon: Rocket,
+    },
+    { label: "Consumables", value: starship.consumables, icon: Calendar },
+    {
+      label: "Cargo Capacity",
+      value: starship.cargo_capacity,
+      unit: "kg",
+      icon: Globe,
+    },
+    { label: "Passengers", value: starship.passengers, icon: Users },
+    {
+      label: "Maximum Atmosphering Speed",
+      value: starship.max_atmosphering_speed,
+      unit: "km/h",
       icon: Ruler,
     },
-    {
-      label: "Starship Class",
-      value: starship?.starship_class || "N/A",
-      icon: Scale,
-    },
+  ];
+
+  const appearanceItems = [
+    { label: "Model", value: starship.model, icon: Car },
+    { label: "starship Class", value: starship.starship_class, icon: Car },
+    { label: "Length", value: starship.length, unit: "m", icon: Ruler },
   ];
 
   const connectionItems = [
-    {
-      label: "Films",
-      count: starship?.films?.length || 0,
-      icon: User,
-    },
-    {
-      count: starship?.pilots?.length || 0,
-      label: "Pilots",
-      icon: Ruler,
-    },
-    {
-      count: starship?.crew?.length || 0,
-      label: "Crew",
-      icon: Ruler,
-    },
+    { label: "Films", count: starship.films?.length || 0, icon: Film },
+    { label: "Pilots", count: starship.pilots?.length || 0, icon: Users },
   ];
 
   const additionalSections = [
-    { title: "Specifications", icon: User, content: starship.consumables },
-  ];
-
-  const statItems = [
-    {
-      label: "Length",
-      value: starship?.length || "N/A",
-      unit: "m",
-      icon: Ruler,
-    },
-    {
-      label: "Max Atmosphering Speed",
-      value: starship?.max_atmosphering_speed || "N/A",
-      unit: "km/h",
-      icon: Scale,
-    },
-    {
-      label: "Hyperdrive Rating",
-      value: starship?.hyperdrive_rating || "N/A",
-      icon: User,
-    },
-    {
-      label: "MGLT",
-      value: starship?.MGLT || "N/A",
-      unit: "Megalights",
-      icon: Ruler,
-    },
+    { title: "URL", icon: Globe, content: starship.url },
+    { title: "Created", icon: Calendar, content: starship.created },
+    { title: "Edited", icon: Calendar, content: starship.edited },
   ];
 
   return (
