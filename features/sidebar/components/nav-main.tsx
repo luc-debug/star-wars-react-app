@@ -30,7 +30,7 @@ export interface Item {
 export function NavMain({ items }: { items: Item[] }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Star Wars</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
