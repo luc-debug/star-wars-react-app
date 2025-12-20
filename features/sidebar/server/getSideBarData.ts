@@ -1,6 +1,6 @@
 import { Item } from "@/features/sidebar/components/nav-main";
 import { ResponseType } from "@/types/ResponseType";
-import { StarWarsDataModels } from "@/types/Root";
+import { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
 
 export async function getSideBarData(): Promise<Item[]> {
   const res = await fetch("https://swapi.py4e.com/api", {
@@ -27,14 +27,14 @@ export async function getSideBarData(): Promise<Item[]> {
       } satisfies Item;
     }
 
-    const json: ResponseType<unknown[]> = await r.json();
+    const json: ResponseType<StarWarsEntity[]> = await r.json();
 
     // Many SWAPI endpoints return a paginated response with `results`.
     const results = json.results;
 
-    const items = results.map((it: any) => ({
-      title: (it.name ?? it.title ?? "Unknown") as string,
-      url: it.url ?? url,
+    const items = results.map((entity) => ({
+      title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
+      url: entity.url ?? url,
     }));
 
     return {
