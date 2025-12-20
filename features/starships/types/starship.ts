@@ -76,10 +76,3 @@ export interface Starship {
   manufacturer: string
   [k: string]: unknown
 }
-
-export type StarshipResponse = {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: Starship[];
-};

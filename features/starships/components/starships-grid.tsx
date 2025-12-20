@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket } from "lucide-react";
 import { Starship } from "../types/starship";
+import { ResponseType } from "@/types/ResponseType";
 
 async function getStarships(): Promise<Starship[]> {
   const res = await fetch("https://swapi.py4e.com/api/starships", {
@@ -12,7 +13,7 @@ async function getStarships(): Promise<Starship[]> {
     throw new Error("Failed to fetch starships");
   }
 
-  const data = await res.json();
+  const data: ResponseType<Starship[]> = await res.json();
   return data.results;
 }
 

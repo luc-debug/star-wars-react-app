@@ -21,7 +21,7 @@ async function getPlanets(): Promise<Planet[]> {
     throw new Error("Failed to fetch planets");
   }
 
-  const data = await res.json();
+  const data: ResponseType<Planet[]> = await res.json();
   return data.results;
 }
 
