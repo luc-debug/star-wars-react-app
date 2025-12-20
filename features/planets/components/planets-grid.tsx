@@ -1,31 +1,32 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Globe } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Globe } from "lucide-react";
+import { ResponseType } from "@/types/ResponseType";
 
 interface Planet {
-  name: string
-  climate: string
-  terrain: string
-  population: string
-  diameter: string
-  gravity: string
+  name: string;
+  climate: string;
+  terrain: string;
+  population: string;
+  diameter: string;
+  gravity: string;
 }
 
 async function getPlanets(): Promise<Planet[]> {
-  const res = await fetch("https://swapi.info/api/planets", {
+  const res = await fetch("https://swapi.py4e.com/api/planets", {
     next: { revalidate: 3600 },
-  })
+  });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch planets")
+    throw new Error("Failed to fetch planets");
   }
 
-  const data = await res.json()
-  return data.slice(0, 12)
+  const data = await res.json();
+  return data.results;
 }
 
 export async function PlanetsGrid() {
-  const planets = await getPlanets()
+  const planets = await getPlanets();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -60,5 +61,5 @@ export async function PlanetsGrid() {
         </Card>
       ))}
     </div>
-  )
+  );
 }
