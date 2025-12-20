@@ -1,13 +1,17 @@
 import { People } from "@/features/peoples/types/People";
+import { Planet } from "@/features/planets/types/Planet";
+import { Starship } from "@/features/starships/types/starship";
 import { ResponseType } from "@/types/ResponseType";
-import { PeopleDetail } from "@/features/peoples/components/people-detail";
+import { StarWarsEntities } from "@/types/Root";
 
-export async function generateStaticParams() {
+export async function generateStaticParams<T extends People | Starship | Planet >(
+    type: StarWarsEntities
+) {
   const promises = Array.from({ length: 9 }).map(async (_, index) => {
     const res = await fetch(
-      `https://swapi.py4e.com/api/people/?page=${index + 1}`
+      `https://swapi.py4e.com/api/${type}/?page=${index + 1}`
     );
-    return (await res.json()) as ResponseType<People[]>;
+    return (await res.json()) as ResponseType<T[]>;
   });
 
   const results = await Promise.all(promises);
@@ -26,7 +30,7 @@ export async function generateStaticParams() {
   // Alle Personen sammeln, slug aus name bilden, filtern, deduplizieren
   const entries = results
     .flatMap((data) => data.results || [])
-    .map((person: People) => {
+    .map((person: T) => {
       const name = person?.name ?? "";
       const slug = makeSlug(name);
       return { slug };
@@ -37,15 +41,4 @@ export async function generateStaticParams() {
   const unique = Array.from(new Map(entries.map((e) => [e.slug, e])).values());
 
   return unique.map((e) => ({ slug: e.slug }));
-}
-
-// Multiple versions of this page will be statically generated
-// using the `params` returned by `generateStaticParams`
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string; name: string }>;
-}) {
-  const { slug } = await params;
-  return <PeopleDetail slug={slug} />;
 }

@@ -1,5 +1,6 @@
 import { Item } from "@/features/sidebar/components/nav-main";
 import { ResponseType } from "@/types/ResponseType";
+import { StarWarsDataModels } from "@/types/Root";
 
 export async function getSideBarData(): Promise<Item[]> {
   const res = await fetch("https://swapi.py4e.com/api", {
@@ -10,7 +11,7 @@ export async function getSideBarData(): Promise<Item[]> {
     throw new Error("Failed to fetch planets");
   }
 
-  const urls: Record<string, string> = await res.json();
+  const urls: StarWarsDataModels = await res.json();
 
   // Fetch each top-level endpoint and build a section with sub-items
   const entries = Object.entries(urls); // [ [key, url], ... ]
