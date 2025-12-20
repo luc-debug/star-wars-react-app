@@ -1,11 +1,9 @@
-import { Suspense } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PeopleGrid } from "@/features/peoples/components/people-grid"
-import { PlanetsGrid } from "@/features/planets/components/planets-grid"
-import { StarshipsGrid } from "@/features/starships/components/starships-grid"
-import { Header } from "@/components/header"
-import { LoadingGrid } from "@/components/loading-grid"
-import { Timeline } from "@/components/timeline"
+import { Suspense } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Header } from "@/components/header";
+import { LoadingGrid } from "@/components/loading-grid";
+import { Timeline } from "@/components/timeline";
+import { EntityGrid } from "@/components/entity-grid";
 
 export default async function HomePage() {
   return (
@@ -36,23 +34,23 @@ export default async function HomePage() {
 
           <TabsContent value="people" className="mt-0">
             <Suspense fallback={<LoadingGrid />}>
-              <PeopleGrid />
+              <EntityGrid entityType="people" />
             </Suspense>
           </TabsContent>
 
           <TabsContent value="planets" className="mt-0">
             <Suspense fallback={<LoadingGrid />}>
-              <PlanetsGrid />
+              <EntityGrid entityType="planets" />
             </Suspense>
           </TabsContent>
 
           <TabsContent value="starships" className="mt-0">
             <Suspense fallback={<LoadingGrid />}>
-              <StarshipsGrid />
+              <EntityGrid entityType="starships" />
             </Suspense>
           </TabsContent>
         </Tabs>
       </main>
     </div>
-  )
+  );
 }
