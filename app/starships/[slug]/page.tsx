@@ -1,5 +1,5 @@
 import { DetailView } from "@/components/detail-view";
-import { Starship } from "@/features/starships/types/starship";
+import { Starship } from "@/types/Starship";
 import { User, Ruler, Scale } from "lucide-react";
 import { generateStaticParams as generateStarshipStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";

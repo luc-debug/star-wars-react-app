@@ -1,6 +1,6 @@
-import { People } from "@/features/peoples/types/People";
-import { Planet } from "@/features/planets/types/Planet";
-import { Starship } from "@/features/starships/types/starship";
+import { People } from "@/types/People";
+import { Planet } from "@/types/Planet";
+import { Starship } from "@/types/Starship";
 import { ResponseType } from "@/types/ResponseType";
 import { StarWarsEntities } from "@/types/Root";
 

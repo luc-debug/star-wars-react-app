@@ -58,5 +58,4 @@ export interface Planet {
    * The average populationof sentient beings inhabiting this planet.
    */
   population: string
-  [k: string]: unknown
 }

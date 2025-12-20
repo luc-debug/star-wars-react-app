@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User } from "lucide-react";
-import { People } from "../types/People";
+import { People } from "../../../types/People";
 import { ResponseType } from "@/types/ResponseType";
 
 async function getPeople(): Promise<People[]> {
