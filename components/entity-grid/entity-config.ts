@@ -63,7 +63,7 @@ export interface EntityConfig {
   icon: string;
   iconColor: string;
   apiEndpoint: string;
-  nameKey: string;
+  nameKey: keyof StarWarsEntity | "title";
   fields: FieldConfig[];
   badges: BadgeConfig[];
   filters: FilterConfig[];
