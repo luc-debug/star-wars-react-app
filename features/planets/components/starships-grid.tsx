@@ -1,32 +1,23 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Rocket } from "lucide-react"
-
-interface Starship {
-  name: string
-  model: string
-  manufacturer: string
-  starship_class: string
-  cost_in_credits: string
-  crew: string
-  passengers: string
-}
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Rocket } from "lucide-react";
+import { Starship } from "../types/starship";
 
 async function getStarships(): Promise<Starship[]> {
-  const res = await fetch("https://swapi.info/api/starships", {
+  const res = await fetch("https://swapi.py4e.com/api/starships", {
     next: { revalidate: 3600 },
-  })
+  });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch starships")
+    throw new Error("Failed to fetch starships");
   }
 
-  const data = await res.json()
-  return data.slice(0, 12)
+  const data = await res.json();
+  return data.results;
 }
 
 export async function StarshipsGrid() {
-  const starships = await getStarships()
+  const starships = await getStarships();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -50,7 +41,9 @@ export async function StarshipsGrid() {
               </div>
               <div>
                 <span className="text-muted-foreground">Passengers:</span>
-                <p className="font-mono text-foreground">{starship.passengers}</p>
+                <p className="font-mono text-foreground">
+                  {starship.passengers}
+                </p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -60,5 +53,5 @@ export async function StarshipsGrid() {
         </Card>
       ))}
     </div>
-  )
+  );
 }
