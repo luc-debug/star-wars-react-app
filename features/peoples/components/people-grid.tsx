@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User } from "lucide-react";
-import { Character } from "../types/Character";
+import { People } from "../types/People";
 import { ResponseType } from "@/types/ResponseType";
 
-async function getPeople(): Promise<Character[]> {
+async function getPeople(): Promise<People[]> {
   const res = await fetch("https://swapi.py4e.com/api/people", {
     next: { revalidate: 3600 },
   });
@@ -13,7 +13,7 @@ async function getPeople(): Promise<Character[]> {
     throw new Error("Failed to fetch people");
   }
 
-  const data: ResponseType<Character[]> = await res.json();
+  const data: ResponseType<People[]> = await res.json();
   return data.results.slice(0, 12);
 }
 

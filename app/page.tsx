@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PeopleGrid } from "@/features/characters/components/people-grid"
+import { PeopleGrid } from "@/features/peoples/components/people-grid"
 import { PlanetsGrid } from "@/features/planets/components/planets-grid"
 import { StarshipsGrid } from "@/features/starships/components/starships-grid"
 import { Header } from "@/components/header"
@@ -18,14 +18,14 @@ export default async function HomePage() {
             Star Wars Databank
           </h1>
           <p className="text-muted-foreground text-lg">
-            Explore characters, planets, and starships from a galaxy far, far away
+            Explore peoples, planets, and starships from a galaxy far, far away
           </p>
         </div>
 
         <Tabs defaultValue="timeline" className="w-full">
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
-            <TabsTrigger value="people">Characters</TabsTrigger>
+            <TabsTrigger value="people">Peoples</TabsTrigger>
             <TabsTrigger value="planets">Planets</TabsTrigger>
             <TabsTrigger value="starships">Starships</TabsTrigger>
           </TabsList>

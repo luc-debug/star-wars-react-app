@@ -1,4 +1,4 @@
-import { Character } from "@/features/characters/types/Character";
+import { People } from "@/features/peoples/types/People";
 import { ResponseType } from "@/types/ResponseType";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +19,7 @@ import {
 export async function generateStaticParams() {
   const promises = Array.from({ length: 9 }).map(async (_, index) => {
     const res = await fetch(`https://swapi.py4e.com/api/people/?page=${index + 1}`);
-    return await res.json() as ResponseType<Character[]>;
+    return await res.json() as ResponseType<People[]>;
   });
 
   const results = await Promise.all(promises);
@@ -38,7 +38,7 @@ export async function generateStaticParams() {
   // Alle Personen sammeln, slug aus name bilden, filtern, deduplizieren
   const entries = results
     .flatMap((data) => data.results || [])
-    .map((person: Character) => {
+    .map((person: People) => {
       const name = person?.name ?? "";
       const slug = makeSlug(name);
       return { slug };
@@ -64,7 +64,7 @@ export default async function Page({
   const res = await fetch(
     `https://swapi.py4e.com/api/people/?search=${encodeURIComponent(searchTerm)}`
   );
-  const data: ResponseType<Character[]> = await res.json();
+  const data: ResponseType<People[]> = await res.json();
   const person = data.results?.[0];
 
   if (!person) {
@@ -72,11 +72,11 @@ export default async function Page({
       <div className="flex items-center justify-center min-h-[50vh]">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-destructive">Character Not Found</CardTitle>
+            <CardTitle className="text-destructive">People Not Found</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              No character found for "{slug.replace(/-/g, " ")}".
+              No People found for "{slug.replace(/-/g, " ")}".
             </p>
           </CardContent>
         </Card>
