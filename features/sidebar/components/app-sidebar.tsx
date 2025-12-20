@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Item, NavMain } from "@/components/nav-main";
+import { Item, NavMain } from "@/features/sidebar/components/nav-main";
 import { Sidebar, SidebarContent, SidebarRail } from "@/components/ui/sidebar";
 import { User, Globe, Film, Rocket, Car, Dna } from "lucide-react";
 

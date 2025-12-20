@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "../styles/globals.css";
 import Galaxy from "@/components/galaxy";
+import { getSideBarData } from "@/features/sidebar/server/getSideBarData";
+import { Sidebar } from "@/features/sidebar/components/sidebar";
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -31,11 +33,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const data = await getSideBarData();
+
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
@@ -51,7 +55,7 @@ export default function RootLayout({
           starSpeed={0.8}
           speed={0.8}
         />
-        {children}
+        <Sidebar>{children}</Sidebar>
         <Analytics />
       </body>
     </html>

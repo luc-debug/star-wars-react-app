@@ -7,7 +7,7 @@ import { Header } from "@/components/header"
 import { LoadingGrid } from "@/components/loading-grid"
 import { Timeline } from "@/components/timeline"
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
