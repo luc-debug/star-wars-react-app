@@ -1,5 +1,5 @@
-import { PeopleGrid } from "@/features/peoples/components/people-grid";
+import { EntityGrid } from "@/components/entity-grid/entity-grid";
 
-export default function PeoplePage() {
-  return <PeopleGrid />;
+export default function FilmsPage() {
+  return <EntityGrid entityType="films" />;
 }
