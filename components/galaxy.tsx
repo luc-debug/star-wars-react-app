@@ -360,5 +360,11 @@ export default function Galaxy({
     transparent,
   ]);
 
-  return <div ref={ctnDom} className="w-full h-full relative" {...rest} />;
+  return (
+    <div
+      ref={ctnDom}
+      className="w-screen h-screen fixed inset-0 z-10 pointer-events-none"
+      {...rest}
+    />
+  );
 }
