@@ -1,31 +1,23 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { User } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { User } from "lucide-react";
+import { Character } from "../types/Character";
 
-interface Person {
-  name: string
-  height: string
-  mass: string
-  hair_color: string
-  birth_year: string
-  gender: string
-}
-
-async function getPeople(): Promise<Person[]> {
-  const res = await fetch("https://swapi.info/api/people", {
+async function getPeople(): Promise<Character[]> {
+  const res = await fetch("https://swapi.py4e.com/api/people", {
     next: { revalidate: 3600 },
-  })
+  });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch people")
+    throw new Error("Failed to fetch people");
   }
 
-  const data = await res.json()
-  return data.slice(0, 12)
+  const data = await res.json();
+  return data.results.slice(0, 12);
 }
 
 export async function PeopleGrid() {
-  const people = await getPeople()
+  const people = await getPeople();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -58,5 +50,5 @@ export async function PeopleGrid() {
         </Card>
       ))}
     </div>
-  )
+  );
 }

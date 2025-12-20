@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PeopleGrid } from "@/components/people-grid"
+import { PeopleGrid } from "@/features/characters/components/people-grid"
 import { PlanetsGrid } from "@/features/planets/components/planets-grid"
 import { StarshipsGrid } from "@/features/starships/components/starships-grid"
 import { Header } from "@/components/header"
