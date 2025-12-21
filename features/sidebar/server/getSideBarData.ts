@@ -44,7 +44,7 @@ export async function getSideBarData(): Promise<Item[]> {
 
       return {
         title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
-        url: makeSlug(key) + "/" + makeSlug(name),
+        url: "/" + makeSlug(key) + "/" + makeSlug(name),
       }
     });
 
