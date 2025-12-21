@@ -1,30 +1,44 @@
 # Star Wars React App
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+## Features
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/luc-debugs-projects/v0-star-wars-react-app)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/h8Ncl0Mct51)
+- Feature-based routing for entities: `films`, `people`, `planets`, `species`, `starships`, `vehicles`.
+- Type-safe data handling via JSON schema → TypeScript type generation.
+- Integrated visual styling inspired by Star Wars (customized `shadcn/ui` tokens).
+- Optional/starfield background component integrated (third-party `galaxy` background).
 
-## Overview
+## Quickstart — Local development
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Prerequisites: Node.js (v16+) and npm installed.
 
-## Deployment
+1. Install dependencies
 
-Your project is live at:
+```powershell
+npm install
+```
 
-**[https://vercel.com/luc-debugs-projects/v0-star-wars-react-app](https://vercel.com/luc-debugs-projects/v0-star-wars-react-app)**
+2. Run the development server
 
-## Build your app
+```powershell
+npm run dev
+```
 
-Continue building your app on:
+Open http://localhost:3000 in your browser.
 
-**[https://v0.app/chat/h8Ncl0Mct51](https://v0.app/chat/h8Ncl0Mct51)**
+## Scripts
 
-## How It Works
+- `npm run dev` — Starts the Next.js development server
+- `npm run build` — Builds the production bundle
+- `npm run start` — Runs the production server after `build`
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+
+Changes made via the v0.app interface are automatically pushed to this repository and redeployed by Vercel.
+
+## Project Structure (high level)
+
+- `app/` — Next.js app routes and pages, organized by feature
+- `components/` — Reusable UI components (entity grid, detail view, UI primitives)
+- `features/` — Feature-level containers (e.g., sidebar)
+- `lib/` — Utilities and helpers (static params generation, search helpers)
+- `types/` — TypeScript types generated from API schemas
+
