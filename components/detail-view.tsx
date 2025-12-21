@@ -92,26 +92,26 @@ export function DetailView({
 
       {/* Stats Grid */}
       {statItems.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <dl className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {statItems.map((item) => {
             const Icon = item.icon;
             return (
               <Card key={item.label} className="bg-card/50 backdrop-blur">
                 <CardContent className="p-4 flex flex-col items-center text-center">
                   <Icon className="w-6 h-6 mb-2 text-primary" />
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                  <dt className="text-xs text-muted-foreground uppercase tracking-wide">
                     {item.label}
-                  </p>
-                  <p className="text-lg font-semibold">
+                  </dt>
+                  <dd className="text-lg font-semibold">
                     {item.value !== "unknown" && item.value !== "n/a"
                       ? `${item.value}${item.unit ? ` ${item.unit}` : ""}`
                       : "Unknown"}
-                  </p>
+                  </dd>
                 </CardContent>
               </Card>
             );
           })}
-        </div>
+        </dl>
       )}
 
       {/* Appearance */}
@@ -127,7 +127,7 @@ export function DetailView({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <dl className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {appearanceItems.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -137,17 +137,17 @@ export function DetailView({
                   >
                     <Icon className="w-5 h-5 text-muted-foreground" />
                     <div>
-                      <p className="text-xs text-muted-foreground">{item.label}</p>
-                      <p className="font-medium capitalize">
+                      <dt className="text-xs text-muted-foreground">{item.label}</dt>
+                      <dd className="font-medium capitalize">
                         {item.value !== "unknown" && item.value !== "n/a"
                           ? item.value
                           : "Unknown"}
-                      </p>
+                      </dd>
                     </div>
                   </div>
                 );
               })}
-            </div>
+            </dl>
           </CardContent>
         </Card>
       )}
