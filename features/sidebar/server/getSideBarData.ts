@@ -2,10 +2,11 @@ import { Item } from "@/features/sidebar/components/nav-main";
 import { makeSlug } from "@/lib/generateStaticParams";
 import { ResponseType } from "@/types/ResponseType";
 import { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
+import { SWAPI_BASE_URL, CACHE_REVALIDATION_TIME } from "@/lib/constants";
 
 export async function getSideBarData(): Promise<Item[]> {
-  const res = await fetch("https://swapi.py4e.com/api", {
-    next: { revalidate: 3600 },
+  const res = await fetch(SWAPI_BASE_URL, {
+    next: { revalidate: CACHE_REVALIDATION_TIME },
   });
 
   if (!res.ok) {

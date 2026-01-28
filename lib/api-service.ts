@@ -5,6 +5,7 @@
 import { StarWarsEntity, StarWarsEntities } from "@/types/Root";
 import { ResponseType } from "@/types/ResponseType";
 import { entityConfigs } from "@/components/entity-grid/entity-config";
+import { CACHE_REVALIDATION_TIME } from "./constants";
 
 /**
  * Fetch a single entity by slug
@@ -48,7 +49,7 @@ export async function fetchAllEntities(
   try {
     while (nextUrl) {
       const res = await fetch(nextUrl, {
-        next: { revalidate: 3600 },
+        next: { revalidate: CACHE_REVALIDATION_TIME },
       });
 
       if (!res.ok) {
