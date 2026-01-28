@@ -1,34 +1,8 @@
 
-import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
-import { ResponseType } from "@/types/ResponseType";
+import { StarWarsEntities } from "@/types/Root";
 import { EntityGridClient } from "./entity-grid-client";
-import { entityConfigs, EntityConfig } from "./entity-config";
-
-/**
- * Fetches all pages of entities from the SWAPI
- */
-async function fetchAllEntities(
-  apiEndpoint: string
-): Promise<StarWarsEntity[]> {
-  const allEntities: StarWarsEntity[] = [];
-  let nextUrl: string | null = apiEndpoint;
-
-  while (nextUrl) {
-    const res = await fetch(nextUrl, {
-      next: { revalidate: 3600 },
-    });
-
-    if (!res.ok) {
-      throw new Error(`Failed to fetch from ${nextUrl}`);
-    }
-
-    const data: ResponseType<StarWarsEntity[]> = await res.json();
-    allEntities.push(...data.results);
-    nextUrl = data.next;
-  }
-
-  return allEntities;
-}
+import { entityConfigs } from "./entity-config";
+import { fetchAllEntities } from "@/lib/api-service";
 
 /**
  * Generic Entity Grid component that can display any Star Wars entity type

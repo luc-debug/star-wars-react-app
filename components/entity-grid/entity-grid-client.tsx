@@ -5,25 +5,41 @@ import { Badge } from "@/components/ui/badge";
 import { StarWarsEntity } from "@/types/Root";
 import { EntityConfig } from "./entity-config";
 import * as LucideIcons from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 interface EntityGridClientProps {
   entities: StarWarsEntity[];
   config: EntityConfig;
 }
 
+/**
+ * Type-safe helper to get an icon component from lucide-react
+ */
+function getIconComponent(iconName: string): LucideIcon {
+  const IconComponent = (LucideIcons as Record<string, unknown>)[iconName];
+  if (typeof IconComponent === "function") {
+    return IconComponent as LucideIcon;
+  }
+  // Fallback to a default icon if the specified icon doesn't exist
+  return LucideIcons.HelpCircle;
+}
+
+/**
+ * Type-safe helper to get a field value from an entity
+ */
+function getEntityValue(entity: StarWarsEntity, key: string): unknown {
+  return (entity as Record<string, unknown>)[key];
+}
+
 export function EntityGridClient({ entities, config }: EntityGridClientProps) {
-  const IconComponent = LucideIcons[
-    config.icon as keyof typeof LucideIcons
-  ] as React.ComponentType<{ className?: string }>;
+  const IconComponent = getIconComponent(config.icon);
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {entities.map((entity, index) => {
-          // Coerce the name to a safe string so JSX doesn't try to render `unknown`
-          const nameValue = String(
-            (entity as Record<string, unknown>)[config.nameKey] ?? "N/A"
-          );
+          // Get the name value safely
+          const nameValue = String(getEntityValue(entity, config.nameKey) ?? "N/A");
 
           return (
             <Card
@@ -39,7 +55,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
               <CardContent className="space-y-3">
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   {config.fields.slice(0, 4).map((field) => {
-                    const value = (entity as Record<string, unknown>)[field.key];
+                    const value = getEntityValue(entity, field.key);
                     const displayValue = field.formatSuffix
                       ? `${String(value ?? "N/A")} ${field.formatSuffix}`
                       : String(value ?? "N/A");
@@ -57,7 +73,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {config.badges.map((badge) => {
-                    const value = (entity as Record<string, unknown>)[badge.key];
+                    const value = getEntityValue(entity, badge.key);
                     if (!value) return null;
                     return (
                       <Badge key={badge.key} variant={badge.variant}>

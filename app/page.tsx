@@ -15,9 +15,9 @@ export default async function HomePage() {
                 Star Wars Databank
               </h1>
               <p className="text-lg text-muted-foreground max-w-prose">
-                Eine umfangreiche, schnell zugängliche Datenbank für das
-                Star‑Wars‑Universum: Charaktere, Planeten, Schiffe und mehr —
-                wunderschön dargestellt und sofort durchsuchbar.
+                A comprehensive, fast-accessible database for the Star Wars
+                universe: Characters, planets, ships, and more — beautifully
+                presented and instantly searchable.
               </p>
 
               <div className="flex flex-wrap gap-3">
@@ -44,8 +44,8 @@ export default async function HomePage() {
               </div>
 
               <div className="mt-6 text-sm text-muted-foreground">
-                Pro Tipp: Verwende die Filter & Suche, um schnell Ergebnisse zu
-                finden — oder stöbere per Timeline weiter unten.
+                Pro tip: Use filters & search to quickly find results — or browse
+                the timeline below.
               </div>
             </div>
 
@@ -53,9 +53,9 @@ export default async function HomePage() {
               <div className="rounded-2xl bg-gradient-to-br from-card to-accent/5 p-6 shadow-lg">
                 <h3 className="text-xl font-semibold mb-3">Quick Look</h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>Über 100+ Einträge (dynamisch per SWAPI geladen)</li>
-                  <li>Sofortige Suche, Sortierung & Filter</li>
-                  <li>Responsive Design für Desktop & Mobile</li>
+                  <li>Over 100+ entries (dynamically loaded via SWAPI)</li>
+                  <li>Instant search, sorting & filters</li>
+                  <li>Responsive design for desktop & mobile</li>
                 </ul>
                 <div className="mt-4 flex gap-2">
                   <Button asChild>
@@ -85,7 +85,7 @@ export default async function HomePage() {
                 <h3 className="text-lg font-semibold">Characters</h3>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                Detaillierte Einträge zu Namen, Maßen, Geburtsjahren und mehr.
+                Detailed entries on names, measurements, birth years, and more.
               </p>
               <Link href="/people" className="text-sm text-primary hover:underline">
                 View Characters →
@@ -100,7 +100,7 @@ export default async function HomePage() {
                 <h3 className="text-lg font-semibold">Planets</h3>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                Klima, Terrain, Population und andere planetare Eigenschaften.
+                Climate, terrain, population, and other planetary characteristics.
               </p>
               <Link href="/planets" className="text-sm text-primary hover:underline">
                 View Planets →
@@ -115,7 +115,7 @@ export default async function HomePage() {
                 <h3 className="text-lg font-semibold">Starships</h3>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                Technische Daten, Kapazität, Hersteller und mehr.
+                Technical specifications, capacity, manufacturer, and more.
               </p>
               <Link href="/starships" className="text-sm text-primary hover:underline">
                 View Starships →
