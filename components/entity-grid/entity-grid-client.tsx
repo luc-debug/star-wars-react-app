@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StarWarsEntity } from "@/types/Root";
-import { EntityConfig } from "./entity-config";
+import { EntityConfig } from "@/lib/entity-config";
 import * as LucideIcons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 

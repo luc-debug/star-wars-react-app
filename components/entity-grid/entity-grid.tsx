@@ -1,7 +1,7 @@
 
 import { StarWarsEntities } from "@/types/Root";
 import { EntityGridClient } from "./entity-grid-client";
-import { entityConfigs } from "./entity-config";
+import { entityConfigs } from "@/lib/entity-config";
 import { fetchAllEntities } from "@/lib/api-service";
 
 /**

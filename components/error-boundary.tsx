@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 
 export default function Error({
@@ -29,12 +30,9 @@ export default function Error({
           <p className="text-muted-foreground">
             {error.message || "Failed to load data. Please try again."}
           </p>
-          <button
-            onClick={reset}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-          >
+          <Button onClick={reset} variant="default">
             Try again
-          </button>
+          </Button>
         </CardContent>
       </Card>
     </div>

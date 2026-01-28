@@ -2,7 +2,7 @@
  * Configuration Helpers - Reduce duplication in entity configurations
  */
 
-import { SortConfig, FilterConfig, FieldConfig } from "@/components/entity-grid/entity-config";
+import { SortConfig, FilterConfig, FieldConfig } from "@/lib/entity-config";
 
 /**
  * Create common sort options that most entities share
@@ -44,6 +44,25 @@ export function createFilter(
 }
 
 /**
+ * Create a sort configuration
+ */
+export function createSort(
+  key: string,
+  label: string,
+  sortKey: string,
+  type: "string" | "number" | "date" = "string",
+  direction: "asc" | "desc" = "asc"
+): SortConfig {
+  return {
+    key,
+    label,
+    sortKey,
+    type,
+    direction,
+  };
+}
+
+/**
  * Create a field configuration
  */
 export function createField(
@@ -71,8 +90,8 @@ export const commonFields = {
  * Common sort configurations
  */
 export const commonSorts = {
-  crew: { key: "crew", label: "Crew Size", sortKey: "crew", type: "number" as const },
-  length: { key: "length", label: "Length", sortKey: "length", type: "number" as const },
+  crew: createSort("crew", "Crew Size", "crew", "number"),
+  length: createSort("length", "Length", "length", "number"),
 };
 
 /**

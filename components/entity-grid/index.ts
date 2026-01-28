@@ -9,4 +9,4 @@ export {
   type BadgeConfig,
   type FilterConfig,
   type SortConfig,
-} from "./entity-config";
+} from "@/lib/entity-config";
