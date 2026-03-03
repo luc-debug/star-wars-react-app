@@ -84,21 +84,6 @@ export default async function HomePage() {
 					</div>
 				</div>
 			</section>
-
-			{/* FOOTER */}
-			<footer className="py-8 mt-12 border-t">
-				<div className="container mx-auto px-6 lg:px-8 text-sm text-muted-foreground flex flex-col md:flex-row items-center justify-between gap-4">
-					<div>© {new Date().getFullYear()} Star Wars Databank</div>
-					<div className="flex gap-4">
-						<Link href="/about" className="hover:underline">
-							About
-						</Link>
-						<Link href="/privacy" className="hover:underline">
-							Privacy
-						</Link>
-					</div>
-				</div>
-			</footer>
 		</main>
 	);
 }
