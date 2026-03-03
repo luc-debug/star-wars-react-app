@@ -20,7 +20,12 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true
-		}
+		},
+		    "domains": {
+      "next": "all",
+	        "react": "all"
+
+    }
 	},
 	"javascript": {
 		"formatter": {
