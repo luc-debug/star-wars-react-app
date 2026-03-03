@@ -17,6 +17,10 @@ export default async function Page({
   const { slug } = await params;
   const planet = await searchItem<Planet>(slug, "planets");
 
+  if (!planet) {
+    return <DetailView title="Not Found" notFound notFoundMessage={`No planet found for "${slug}"`} />;
+  }
+
   const [filmLinks, residentLinks] = await Promise.all([
     resolveLinks(planet.films),
     resolveLinks(planet.residents),

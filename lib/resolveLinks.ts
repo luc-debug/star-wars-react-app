@@ -26,7 +26,7 @@ export async function resolveLinks(urls: unknown[]): Promise<ResolvedLink[]> {
       .filter((u): u is string => typeof u === "string")
       .map(async (url) => {
         try {
-          const res = await fetch(url, { next: { revalidate: 3600 } });
+          const res = await fetch(url);
           if (!res.ok) return null;
           const data = await res.json();
           const name: string = data.name || data.title || "";

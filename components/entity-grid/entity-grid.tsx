@@ -14,9 +14,7 @@ async function fetchAllEntities(
   let nextUrl: string | null = apiEndpoint;
 
   while (nextUrl) {
-    const res = await fetch(nextUrl, {
-      next: { revalidate: 3600 },
-    });
+    const res = await fetch(nextUrl);
 
     if (!res.ok) {
       throw new Error(`Failed to fetch from ${nextUrl}`);

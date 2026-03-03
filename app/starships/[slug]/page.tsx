@@ -27,6 +27,10 @@ export default async function Page({
   const { slug } = await params;
   const starship = await searchItem<Starship>(slug, "starships");
 
+  if (!starship) {
+    return <DetailView title="Not Found" notFound notFoundMessage={`No starship found for "${slug}"`} />;
+  }
+
   const [filmLinks, pilotLinks] = await Promise.all([
     resolveLinks(starship.films),
     resolveLinks(starship.pilots),

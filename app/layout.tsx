@@ -38,7 +38,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = await getSideBarData();
 
   return (
     <html lang="en">

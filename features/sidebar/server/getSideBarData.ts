@@ -4,57 +4,61 @@ import { ResponseType } from "@/types/ResponseType";
 import { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
 
 export async function getSideBarData(): Promise<Item[]> {
-  const res = await fetch("https://swapi.py4e.com/api", {
-    next: { revalidate: 3600 },
-  });
+  let urls: StarWarsDataModels;
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch planets");
+  try {
+    const res = await fetch("https://swapi.py4e.com/api");
+
+    if (!res.ok) return [];
+
+    urls = await res.json();
+  } catch {
+    return [];
   }
-
-  const urls: StarWarsDataModels = await res.json();
 
   // Fetch each top-level endpoint and build a section with sub-items
   const entries = Object.entries(urls); // [ [key, url], ... ]
 
   const sectionPromises = entries.map(async ([key, url]) => {
-    const r = await fetch(url);
-    if (!r.ok) {
-      // If a single category fails, return an empty section instead of throwing
+    try {
+      const r = await fetch(url);
+      if (!r.ok) {
+        return {
+          title: key.charAt(0).toUpperCase() + key.slice(1),
+          url: "/" + makeSlug(key),
+          items: [],
+        } satisfies Item;
+      }
+
+      const json: ResponseType<StarWarsEntity[]> = await r.json();
+      const results = json.results;
+
+      const items = results.map((entity) => {
+        let name = "";
+        if ("name" in entity && typeof entity.name === "string") {
+          name = entity.name;
+        } else if ("title" in entity && typeof entity.title === "string") {
+          name = entity.title;
+        }
+
+        return {
+          title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
+          url: "/" + makeSlug(key) + "/" + makeSlug(name),
+        };
+      });
+
       return {
         title: key.charAt(0).toUpperCase() + key.slice(1),
-        url: makeSlug(),
+        url: "/" + makeSlug(key),
+        items,
+      } satisfies Item;
+    } catch {
+      return {
+        title: key.charAt(0).toUpperCase() + key.slice(1),
+        url: "/" + makeSlug(key),
         items: [],
       } satisfies Item;
     }
-
-    const json: ResponseType<StarWarsEntity[]> = await r.json();
-
-    // Many SWAPI endpoints return a paginated response with `results`.
-    const results = json.results;
-
-    const items = results.map((entity) => {
-
-      let name = "";
-      if ("name" in entity && typeof entity.name === "string") {
-        name = entity.name;
-      } else if ("title" in entity && typeof entity.title === "string") {
-        name = entity.title;
-      }
-
-      return {
-        title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
-        url: "/" + makeSlug(key) + "/" + makeSlug(name),
-      }
-    });
-
-
-
-    return {
-      title: key.charAt(0).toUpperCase() + key.slice(1),
-      url: "/" + makeSlug(key),
-      items,
-    } satisfies Item;
   });
 
   const sections = await Promise.all(sectionPromises);

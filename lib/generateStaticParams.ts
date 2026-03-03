@@ -4,20 +4,25 @@ import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 export async function generateStaticParams<T extends StarWarsEntity>(
     type: StarWarsEntities
 ) {
-    const promises = Array.from({ length: 9 }).map(async (_, index) => {
-        const res = await fetch(
-            `https://swapi.py4e.com/api/${type}/?page=${index + 1}`
-        );
-        return (await res.json()) as ResponseType<T[]>;
-    });
+    const allResults: T[] = [];
+    let nextUrl: string | null = `https://swapi.py4e.com/api/${type}/?page=1`;
 
-    const results = await Promise.all(promises);
+    while (nextUrl) {
+        try {
+            const res = await fetch(nextUrl);
+            if (!res.ok) break;
+            const data = (await res.json()) as ResponseType<T[]>;
+            allResults.push(...(data.results || []));
+            nextUrl = data.next ?? null;
+        } catch {
+            break;
+        }
+    }
 
 
 
     // Alle Personen sammeln, slug aus name bilden, filtern, deduplizieren
-    const entries = results
-        .flatMap((data) => data.results || [])
+    const entries = allResults
         .map((person: T) => {
             let name = "";
             if ("name" in person && typeof person.name === "string") {

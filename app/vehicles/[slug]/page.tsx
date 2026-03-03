@@ -27,6 +27,10 @@ export default async function Page({
   const { slug } = await params;
   const vehicle = await searchItem<Vehicle>(slug, "vehicles");
 
+  if (!vehicle) {
+    return <DetailView title="Not Found" notFound notFoundMessage={`No vehicle found for "${slug}"`} />;
+  }
+
   const [filmLinks, pilotLinks] = await Promise.all([
     resolveLinks(vehicle.films),
     resolveLinks(vehicle.pilots),
