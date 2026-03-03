@@ -1,4 +1,3 @@
-
 import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 import { ResponseType } from "@/types/ResponseType";
 import { EntityGridClient } from "./entity-grid-client";
@@ -8,7 +7,7 @@ import { entityConfigs, EntityConfig } from "./entity-config";
  * Fetches all pages of entities from the SWAPI
  */
 async function fetchAllEntities(
-  apiEndpoint: string
+  apiEndpoint: string,
 ): Promise<StarWarsEntity[]> {
   const allEntities: StarWarsEntity[] = [];
   let nextUrl: string | null = apiEndpoint;
@@ -17,7 +16,9 @@ async function fetchAllEntities(
     const res = await fetch(nextUrl);
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch from ${nextUrl}`);
+      throw new Error(
+        `Failed to fetch from ${nextUrl} - status: ${res.status} ${res.statusText}`,
+      );
     }
 
     const data: ResponseType<StarWarsEntity[]> = await res.json();
