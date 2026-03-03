@@ -13,11 +13,17 @@ async function fetchAllEntities(
 	let nextUrl: string | null = apiEndpoint;
 
 	while (nextUrl) {
-		const res = await fetch(nextUrl);
+		const res = await fetch(nextUrl, {
+			headers: {
+				"User-Agent": "star-wars-databank/1.0 (https://github.com)",
+				Accept: "application/json",
+			},
+		});
 
 		if (!res.ok) {
+			const body = await res.text().catch(() => "(unreadable)");
 			throw new Error(
-				`Failed to fetch from ${nextUrl} - status: ${res.status} ${res.statusText}`,
+				`Failed to fetch from ${nextUrl} — ${res.status} ${res.statusText}\nBody: ${body}`,
 			);
 		}
 
