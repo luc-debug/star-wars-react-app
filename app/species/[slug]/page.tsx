@@ -2,7 +2,8 @@ import { DetailView } from "@/components/detail-view";
 import { Species } from "@/types/Species";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
-import { Ruler, Heart, Tag, Palette, Eye, Film, Users, MapPin, Link, Clock, UserCircle, MessageSquare } from "lucide-react";
+import { resolveLinks, resolveLink } from "@/lib/resolveLinks";
+import { Ruler, Heart, Tag, Palette, Eye, Film, Users, MapPin, UserCircle, MessageSquare } from "lucide-react";
 
 export async function generateStaticParams() {
   return generatePeopleStaticParams<Species>("species");
@@ -15,6 +16,12 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const species = await searchItem<Species>(slug, "species");
+
+  const [peopleLinks, filmLinks, homeworldLink] = await Promise.all([
+    resolveLinks(species.people),
+    resolveLinks(species.films),
+    resolveLink(species.homeworld),
+  ]);
 
   const statItems = [
     { label: "Average Height", value: species.average_height, unit: "cm", icon: Ruler },
@@ -31,15 +38,32 @@ export default async function Page({
   ];
 
   const connectionItems = [
-    { label: "People", count: species.people?.length || 0, icon: Users },
-    { label: "Films", count: species.films?.length || 0, icon: Film },
+    {
+      label: "People",
+      count: species.people?.length || 0,
+      icon: Users,
+      links: peopleLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Films",
+      count: species.films?.length || 0,
+      icon: Film,
+      links: filmLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
   ];
 
   const additionalSections = [
-    { title: "Homeworld", icon: MapPin, content: species.homeworld },
-    { title: "URL", icon: Link, content: species.url },
-    { title: "Created", icon: Clock, content: species.created },
-    { title: "Edited", icon: Clock, content: species.edited },
+    {
+      title: "Homeworld",
+      icon: MapPin,
+      content: homeworldLink ? (
+        <a href={homeworldLink.href} className="text-primary hover:underline">
+          {homeworldLink.name}
+        </a>
+      ) : (
+        "Unknown"
+      ),
+    },
   ];
 
   return (

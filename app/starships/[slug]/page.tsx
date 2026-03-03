@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { generateStaticParams as generateStarshipStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
+import { resolveLinks } from "@/lib/resolveLinks";
 
 export async function generateStaticParams() {
   return generateStarshipStaticParams<Starship>("starships");
@@ -25,6 +26,12 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const starship = await searchItem<Starship>(slug, "starships");
+
+  const [filmLinks, pilotLinks] = await Promise.all([
+    resolveLinks(starship.films),
+    resolveLinks(starship.pilots),
+  ]);
+
   const statItems = [
     { label: "Manufacturer", value: starship.manufacturer, icon: Globe },
     {
@@ -62,14 +69,18 @@ export default async function Page({
   ];
 
   const connectionItems = [
-    { label: "Films", count: starship.films?.length || 0, icon: Film },
-    { label: "Pilots", count: starship.pilots?.length || 0, icon: Users },
-  ];
-
-  const additionalSections = [
-    { title: "URL", icon: Globe, content: starship.url },
-    { title: "Created", icon: Calendar, content: starship.created },
-    { title: "Edited", icon: Calendar, content: starship.edited },
+    {
+      label: "Films",
+      count: starship.films?.length || 0,
+      icon: Film,
+      links: filmLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Pilots",
+      count: starship.pilots?.length || 0,
+      icon: Users,
+      links: pilotLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
   ];
 
   return (
@@ -77,7 +88,6 @@ export default async function Page({
       appearanceItems={appearanceItems}
       title={starship?.name || "Starship Details"}
       connectionItems={connectionItems}
-      additionalSections={additionalSections}
       statItems={statItems}
     />
   );

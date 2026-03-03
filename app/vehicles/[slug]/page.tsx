@@ -2,6 +2,7 @@ import { DetailView } from "@/components/detail-view";
 import { Vehicle } from "@/types/Vehicle";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
+import { resolveLinks } from "@/lib/resolveLinks";
 import {
   Car,
   Globe,
@@ -25,6 +26,11 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const vehicle = await searchItem<Vehicle>(slug, "vehicles");
+
+  const [filmLinks, pilotLinks] = await Promise.all([
+    resolveLinks(vehicle.films),
+    resolveLinks(vehicle.pilots),
+  ]);
 
   const statItems = [
     { label: "Manufacturer", value: vehicle.manufacturer, icon: Globe },
@@ -59,14 +65,18 @@ export default async function Page({
   ];
 
   const connectionItems = [
-    { label: "Films", count: vehicle.films?.length || 0, icon: Film },
-    { label: "Pilots", count: vehicle.pilots?.length || 0, icon: Users },
-  ];
-
-  const additionalSections = [
-    { title: "URL", icon: Globe, content: vehicle.url },
-    { title: "Created", icon: Calendar, content: vehicle.created },
-    { title: "Edited", icon: Calendar, content: vehicle.edited },
+    {
+      label: "Films",
+      count: vehicle.films?.length || 0,
+      icon: Film,
+      links: filmLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Pilots",
+      count: vehicle.pilots?.length || 0,
+      icon: Users,
+      links: pilotLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
   ];
 
   return (
@@ -74,7 +84,6 @@ export default async function Page({
       appearanceItems={appearanceItems}
       title={vehicle?.name || "Vehicle Details"}
       connectionItems={connectionItems}
-      additionalSections={additionalSections}
       statItems={statItems}
     />
   );

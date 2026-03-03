@@ -2,6 +2,7 @@ import { DetailView } from "@/components/detail-view";
 import { People } from "@/types/People";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
+import { resolveLinks, resolveLink } from "@/lib/resolveLinks";
 import {
   Ruler,
   Scale,
@@ -14,14 +15,13 @@ import {
   Rocket,
   Car,
   Globe,
+  Dna,
 } from "lucide-react";
 
 export async function generateStaticParams() {
   return generatePeopleStaticParams<People>("people");
 }
 
-// Multiple versions of this page will be statically generated
-// using the `params` returned by `generateStaticParams`
 export default async function Page({
   params,
 }: {
@@ -29,6 +29,15 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const person = await searchItem<People>(slug, "people");
+
+  const [filmLinks, vehicleLinks, starshipLinks, speciesLinks, homeworldLink] =
+    await Promise.all([
+      resolveLinks(person.films),
+      resolveLinks(person.vehicles),
+      resolveLinks(person.starships),
+      resolveLinks(person.species),
+      resolveLink(person.homeworld),
+    ]);
 
   const statItems = [
     { label: "Height", value: person.height, unit: "cm", icon: Ruler },
@@ -48,21 +57,40 @@ export default async function Page({
       label: "Films",
       count: person.films?.length || 0,
       icon: Film,
+      links: filmLinks.map((l) => ({ name: l.name, href: l.href })),
     },
     {
       label: "Vehicles",
       count: person.vehicles?.length || 0,
       icon: Car,
+      links: vehicleLinks.map((l) => ({ name: l.name, href: l.href })),
     },
     {
       label: "Starships",
       count: person.starships?.length || 0,
       icon: Rocket,
+      links: starshipLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Species",
+      count: person.species?.length || 0,
+      icon: Dna,
+      links: speciesLinks.map((l) => ({ name: l.name, href: l.href })),
     },
   ];
 
   const additionalSections = [
-    { title: "Homeworld", icon: Globe, content: person.homeworld },
+    {
+      title: "Homeworld",
+      icon: Globe,
+      content: homeworldLink ? (
+        <a href={homeworldLink.href} className="text-primary hover:underline">
+          {homeworldLink.name}
+        </a>
+      ) : (
+        String(person.homeworld)
+      ),
+    },
   ];
 
   return (

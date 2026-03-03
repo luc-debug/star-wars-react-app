@@ -2,7 +2,8 @@ import { DetailView } from "@/components/detail-view";
 import { Film } from "@/types/Film";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
-import { Film as FilmIcon, Calendar, User, Globe, Rocket, Car, Users, Hash } from "lucide-react";
+import { resolveLinks } from "@/lib/resolveLinks";
+import { Film as FilmIcon, Calendar, User, Globe, Rocket, Car, Users, Hash, Dna } from "lucide-react";
 
 export async function generateStaticParams() {
   return generatePeopleStaticParams<Film>("films");
@@ -16,6 +17,15 @@ export default async function Page({
   const { slug } = await params;
   const film = await searchItem<Film>(slug, "films");
 
+  const [characterLinks, planetLinks, starshipLinks, vehicleLinks, speciesLinks] =
+    await Promise.all([
+      resolveLinks(film.characters),
+      resolveLinks(film.planets),
+      resolveLinks(film.starships),
+      resolveLinks(film.vehicles),
+      resolveLinks(film.species),
+    ]);
+
   const statItems = [
     { label: "Episode", value: String(film.episode_id), icon: Hash },
     { label: "Release Date", value: film.release_date, icon: Calendar },
@@ -28,17 +38,36 @@ export default async function Page({
   ];
 
   const connectionItems = [
-    { label: "Characters", count: film.characters?.length || 0, icon: User },
-    { label: "Planets", count: film.planets?.length || 0, icon: Globe },
-    { label: "Starships", count: film.starships?.length || 0, icon: Rocket },
-    { label: "Vehicles", count: film.vehicles?.length || 0, icon: Car },
-    { label: "Species", count: film.species?.length || 0, icon: Users },
-  ];
-
-  const additionalSections = [
-    { title: "URL", icon: Globe, content: film.url },
-    { title: "Created", icon: Calendar, content: film.created },
-    { title: "Edited", icon: Calendar, content: film.edited },
+    {
+      label: "Characters",
+      count: film.characters?.length || 0,
+      icon: User,
+      links: characterLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Planets",
+      count: film.planets?.length || 0,
+      icon: Globe,
+      links: planetLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Starships",
+      count: film.starships?.length || 0,
+      icon: Rocket,
+      links: starshipLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Vehicles",
+      count: film.vehicles?.length || 0,
+      icon: Car,
+      links: vehicleLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
+    {
+      label: "Species",
+      count: film.species?.length || 0,
+      icon: Dna,
+      links: speciesLinks.map((l) => ({ name: l.name, href: l.href })),
+    },
   ];
 
   return (
@@ -46,7 +75,6 @@ export default async function Page({
       appearanceItems={appearanceItems}
       title={film?.title || "Film Details"}
       connectionItems={connectionItems}
-      additionalSections={additionalSections}
       statItems={statItems}
     />
   );

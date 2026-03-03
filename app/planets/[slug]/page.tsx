@@ -2,6 +2,7 @@ import { DetailView } from "@/components/detail-view";
 import { Planet } from "@/types/Planet";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
+import { resolveLinks } from "@/lib/resolveLinks";
 import { Ruler, Scale, Calendar, Palette, Eye, Film, User, Globe } from "lucide-react";
 
 export async function generateStaticParams() {
@@ -15,6 +16,11 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const planet = await searchItem<Planet>(slug, "planets");
+
+  const [filmLinks, residentLinks] = await Promise.all([
+    resolveLinks(planet.films),
+    resolveLinks(planet.residents),
+  ]);
 
   const statItems = [
     { label: "Diameter", value: planet.diameter, unit: "km", icon: Ruler },
@@ -34,17 +40,14 @@ export default async function Page({
       label: "Films",
       count: planet.films?.length || 0,
       icon: Film,
+      links: filmLinks.map((l) => ({ name: l.name, href: l.href })),
     },
     {
       label: "Residents",
       count: planet.residents?.length || 0,
       icon: User,
+      links: residentLinks.map((l) => ({ name: l.name, href: l.href })),
     },
-  ];
-
-  const additionalSections = [
-    { title: "URL", icon: Globe, content: planet.url },
-    { title: "Created", icon: Calendar, content: planet.created },
   ];
 
   return (
@@ -52,7 +55,6 @@ export default async function Page({
       appearanceItems={appearanceItems}
       title={planet?.name || "Planet Details"}
       connectionItems={connectionItems}
-      additionalSections={additionalSections}
       statItems={statItems}
     />
   );

@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import React from "react";
+import Link from "next/link";
 
 // Typen für die generische Komponente
 interface StatItem {
@@ -16,11 +17,17 @@ interface AppearanceItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
+interface ConnectionLink {
+  name: string;
+  href: string;
+}
+
 interface ConnectionItem {
   label: string;
   count: number;
   icon: React.ComponentType<{ className?: string }>;
   description?: string;
+  links?: ConnectionLink[];
 }
 
 interface AdditionalSection {
@@ -155,7 +162,9 @@ export function DetailView({
       {/* Connections */}
       {connectionItems.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          {connectionItems.map((item) => {
+          {connectionItems
+            .filter((item) => item.count > 0 || (item.links && item.links.length > 0))
+            .map((item) => {
             const Icon = item.icon;
             return (
               <Card key={item.label} className="bg-card/50 backdrop-blur">
@@ -166,9 +175,21 @@ export function DetailView({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Badge variant="outline">
-                    {item.count} {item.description || "items"}
-                  </Badge>
+                  {item.links && item.links.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {item.links.map((link) => (
+                        <Link key={link.href} href={link.href}>
+                          <Badge variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors">
+                            {link.name}
+                          </Badge>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <Badge variant="outline">
+                      {item.count} {item.description || "items"}
+                    </Badge>
+                  )}
                 </CardContent>
               </Card>
             );
