@@ -11,6 +11,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -43,28 +44,35 @@ export function NavMain({ items }: { items: Item[] }) {
             className="group/collapsible"
           >
             <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+              <SidebarMenuButton asChild tooltip={item.title}>
+                <Link href={item.url} onClick={() => setOpenMobile(false)}>
                   {item.icon && <item.icon />}
-                  <Link href={item.url} onClick={() => setOpenMobile(false)}>
-                    <span>{item.title}</span>
-                  </Link>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <Link href={subItem.url} onClick={() => setOpenMobile(false)}>
-                          <span>{subItem.title}</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+              {item.items?.length ? (
+                <>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuAction className="data-[state=open]:rotate-90">
+                      <ChevronRight />
+                      <span className="sr-only">Toggle</span>
+                    </SidebarMenuAction>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {item.items.map((subItem) => (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton asChild>
+                            <Link href={subItem.url} onClick={() => setOpenMobile(false)}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </>
+              ) : null}
             </SidebarMenuItem>
           </Collapsible>
         ))}
