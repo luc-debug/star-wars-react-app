@@ -16,6 +16,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 
@@ -28,6 +29,8 @@ export interface Item {
 }
 
 export function NavMain({ items }: { items: Item[] }) {
+  const { setOpenMobile } = useSidebar();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Star Wars</SidebarGroupLabel>
@@ -43,7 +46,7 @@ export function NavMain({ items }: { items: Item[] }) {
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
-                  <Link href={item.url}>
+                  <Link href={item.url} onClick={() => setOpenMobile(false)}>
                     <span>{item.title}</span>
                   </Link>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -54,7 +57,7 @@ export function NavMain({ items }: { items: Item[] }) {
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <Link href={subItem.url}>
+                        <Link href={subItem.url} onClick={() => setOpenMobile(false)}>
                           <span>{subItem.title}</span>
                         </Link>
                       </SidebarMenuSubButton>
