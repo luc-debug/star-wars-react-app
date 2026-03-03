@@ -34,7 +34,9 @@ export function NavMain({ items }: { items: Item[] }) {
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Star Wars</SidebarGroupLabel>
+      <SidebarGroupLabel>
+        <Link href="/" onClick={() => setOpenMobile(false)}>Star Wars</Link>
+      </SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
