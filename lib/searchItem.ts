@@ -1,6 +1,6 @@
+import { env } from "@/lib/env";
 import type { ResponseType } from "@/types/ResponseType";
 import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
-import { env } from "@/lib/env";
 
 export const searchItem = async <T extends StarWarsEntity>(
 	slug: string,

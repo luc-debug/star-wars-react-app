@@ -1,6 +1,6 @@
 import type { Item } from "@/features/sidebar/components/nav-main";
-import { makeSlug } from "@/lib/generateStaticParams";
 import { env } from "@/lib/env";
+import { makeSlug } from "@/lib/generateStaticParams";
 import type { ResponseType } from "@/types/ResponseType";
 import type { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
 

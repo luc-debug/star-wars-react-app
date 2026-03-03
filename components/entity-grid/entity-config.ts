@@ -1,5 +1,5 @@
-import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 import { env } from "@/lib/env";
+import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 
 /**
  * Configuration for displaying a field in the entity card
