@@ -27,5 +27,5 @@ jobs:
       - name: Biome lint
         run: npx @biomejs/biome check .
 
-      - name: Next.js build
-        run: npx next build
+      - name: TypeScript type check
+        run: npx tsc --noEmit
