@@ -10,7 +10,8 @@ jobs:
   lint-and-build:
     name: Lint & Build
     runs-on: ubuntu-latest
-
+    env:
+      SWAPI_BASE_URL: ${{ vars.SWAPI_BASE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
