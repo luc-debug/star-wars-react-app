@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
@@ -34,9 +33,6 @@ export function NavMain({ items }: { items: Item[] }) {
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>
-        <Link href="/" onClick={() => setOpenMobile(false)}>Star Wars</Link>
-      </SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
