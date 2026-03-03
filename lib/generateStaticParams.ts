@@ -1,11 +1,12 @@
 import type { ResponseType } from "@/types/ResponseType";
 import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
+import { env } from "./env";
 
 export async function generateStaticParams<T extends StarWarsEntity>(
 	type: StarWarsEntities,
 ) {
 	const allResults: T[] = [];
-	let nextUrl: string | null = `https://swapi.py4e.com/api/${type}/?page=1`;
+	let nextUrl: string | null = `${env.swapiBaseUrl}/api/${type}/?page=1`;
 
 	while (nextUrl) {
 		try {

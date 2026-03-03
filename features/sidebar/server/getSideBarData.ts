@@ -1,5 +1,6 @@
 import type { Item } from "@/features/sidebar/components/nav-main";
 import { makeSlug } from "@/lib/generateStaticParams";
+import { env } from "@/lib/env";
 import type { ResponseType } from "@/types/ResponseType";
 import type { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
 
@@ -7,7 +8,7 @@ export async function getSideBarData(): Promise<Item[]> {
 	let urls: StarWarsDataModels;
 
 	try {
-		const res = await fetch("https://swapi.py4e.com/api");
+		const res = await fetch(`${env.swapiBaseUrl}/api`);
 
 		if (!res.ok) return [];
 

@@ -1,4 +1,5 @@
 import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
+import { env } from "@/lib/env";
 
 /**
  * Configuration for displaying a field in the entity card
@@ -76,7 +77,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
 		title: "Characters",
 		icon: "User",
 		iconColor: "text-primary",
-		apiEndpoint: "https://swapi.py4e.com/api/people",
+		apiEndpoint: `${env.swapiBaseUrl}/api/people`,
 		nameKey: "name",
 		fields: [
 			{ key: "height", label: "Height", formatSuffix: "cm" },
@@ -124,7 +125,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
 		title: "Planets",
 		icon: "Globe",
 		iconColor: "text-accent",
-		apiEndpoint: "https://swapi.py4e.com/api/planets",
+		apiEndpoint: `${env.swapiBaseUrl}/api/planets`,
 		nameKey: "name",
 		fields: [
 			{ key: "diameter", label: "Diameter" },
@@ -187,7 +188,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
 		title: "Starships",
 		icon: "Rocket",
 		iconColor: "text-primary",
-		apiEndpoint: "https://swapi.py4e.com/api/starships",
+		apiEndpoint: `${env.swapiBaseUrl}/api/starships`,
 		nameKey: "name",
 		fields: [
 			{ key: "model", label: "Model" },
@@ -231,7 +232,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
 		title: "Films",
 		icon: "Film",
 		iconColor: "text-yellow-500",
-		apiEndpoint: "https://swapi.py4e.com/api/films",
+		apiEndpoint: `${env.swapiBaseUrl}/api/films`,
 		nameKey: "title",
 		fields: [
 			{ key: "director", label: "Director" },
@@ -276,7 +277,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
 		title: "Species",
 		icon: "Bug",
 		iconColor: "text-green-500",
-		apiEndpoint: "https://swapi.py4e.com/api/species",
+		apiEndpoint: `${env.swapiBaseUrl}/api/species`,
 		nameKey: "name",
 		fields: [
 			{ key: "classification", label: "Classification" },
@@ -326,7 +327,7 @@ export const entityConfigs: Record<StarWarsEntities, EntityConfig> = {
 		title: "Vehicles",
 		icon: "Car",
 		iconColor: "text-orange-500",
-		apiEndpoint: "https://swapi.py4e.com/api/vehicles",
+		apiEndpoint: `${env.swapiBaseUrl}/api/vehicles`,
 		nameKey: "name",
 		fields: [
 			{ key: "model", label: "Model" },

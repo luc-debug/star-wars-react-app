@@ -23,6 +23,14 @@ npm install
 npm run dev
 ```
 
+3. Add the following environment variable to a `.env.local` file in the project root:
+
+```
+SWAPI_BASE_URL=https://swapi.dev
+```
+
+*The .env.local file is not included in git as it is best practice to keep local development configurations out of version control.*
+
 Open http://localhost:3000 in your browser.
 
 ## Scripts
@@ -30,7 +38,6 @@ Open http://localhost:3000 in your browser.
 - `npm run dev` — Starts the Next.js development server
 - `npm run build` — Builds the production bundle
 - `npm run start` — Runs the production server after `build`
-
 
 Changes made via the v0.app interface are automatically pushed to this repository and redeployed by Vercel.
 
@@ -41,4 +48,3 @@ Changes made via the v0.app interface are automatically pushed to this repositor
 - `features/` — Feature-level containers (e.g., sidebar)
 - `lib/` — Utilities and helpers (static params generation, search helpers)
 - `types/` — TypeScript types generated from API schemas
-

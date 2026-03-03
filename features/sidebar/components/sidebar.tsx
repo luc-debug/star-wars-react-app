@@ -28,7 +28,10 @@ export async function Sidebar({ children }: { children: React.ReactNode }) {
 					<p>
 						Built with data from{" "}
 						<a
-							href="https://swapi.py4e.com"
+							href={
+								process.env.NEXT_PUBLIC_SWAPI_BASE_URL ??
+								"https://swapi.py4e.com"
+							}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="underline hover:text-foreground transition-colors"
