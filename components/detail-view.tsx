@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import React from "react";
+import type React from "react";
 import Link from "next/link";
 
 // Typen für die generische Komponente
@@ -198,10 +198,10 @@ export function DetailView({
       )}
 
       {/* Additional Sections */}
-      {additionalSections.map((section, index) => {
+      {additionalSections.map((section) => {
         const Icon = section.icon;
         return (
-          <Card key={index} className="mt-8 bg-card/50 backdrop-blur">
+          <Card key={section.title} className="mt-8 bg-card/50 backdrop-blur">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Icon className="w-5 h-5 text-primary" />

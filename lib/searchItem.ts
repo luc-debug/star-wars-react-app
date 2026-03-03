@@ -1,8 +1,6 @@
-import { People } from "@/types/People";
-import { Planet } from "@/types/Planet";
-import { Starship } from "@/types/Starship";
-import { ResponseType } from "@/types/ResponseType";
-import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
+
+import type { ResponseType } from "@/types/ResponseType";
+import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 
 export const searchItem = async <T extends StarWarsEntity>(slug: string, type: StarWarsEntities): Promise<T | undefined> => {
     // Try full slug as search phrase first (e.g. "padme amidala"), fall back to first word
@@ -18,7 +16,7 @@ export const searchItem = async <T extends StarWarsEntity>(slug: string, type: S
             const data: ResponseType<T[]> = await res.json();
             if (data.results?.length) return data.results[0];
         } catch {
-            continue;
+            console.error(`Error searching for ${slug} in ${type}`);
         }
     }
 

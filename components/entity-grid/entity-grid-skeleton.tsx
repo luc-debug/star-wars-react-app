@@ -1,11 +1,15 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { generateUniqueIdArray } from "@/lib/utils";
+import { useMemo } from "react";
 
 interface EntityGridSkeletonProps {
   count?: number;
 }
 
 export function EntityGridSkeleton({ count = 6 }: EntityGridSkeletonProps) {
+  const items = useMemo(() => generateUniqueIdArray(count), [count]);
+
   return (
     <div className="space-y-4">
       {/* Search and Controls Skeleton */}
@@ -24,8 +28,8 @@ export function EntityGridSkeleton({ count = 6 }: EntityGridSkeletonProps) {
 
       {/* Grid Skeleton */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Array.from({ length: count }).map((_, index) => (
-          <Card key={index}>
+        {items.map((item) => (
+          <Card key={item.id}>
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Skeleton className="h-5 w-5 rounded" />

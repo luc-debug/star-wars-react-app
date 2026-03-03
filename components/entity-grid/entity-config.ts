@@ -1,11 +1,5 @@
-import { LucideIcon, Globe, User, Rocket, Film, Bug, Car } from "lucide-react";
-import { People } from "@/types/People";
-import { Planet } from "@/types/Planet";
-import { Starship } from "@/types/Starship";
-import { Film as FilmType } from "@/types/Film";
-import { Species } from "@/types/Species";
-import { Vehicle } from "@/types/Vehicle";
-import { StarWarsEntity, StarWarsEntities } from "@/types/Root";
+
+import type { StarWarsEntity, StarWarsEntities } from "@/types/Root";
 
 /**
  * Configuration for displaying a field in the entity card

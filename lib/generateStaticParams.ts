@@ -1,5 +1,5 @@
-import { ResponseType } from "@/types/ResponseType";
-import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
+import type { ResponseType } from "@/types/ResponseType";
+import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
 
 export async function generateStaticParams<T extends StarWarsEntity>(
     type: StarWarsEntities

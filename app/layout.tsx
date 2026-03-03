@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "../styles/globals.css";
 import Galaxy from "@/components/galaxy";
-import { getSideBarData } from "@/features/sidebar/server/getSideBarData";
 import { Sidebar } from "@/features/sidebar/components/sidebar";
 
 const _geist = Geist({ subsets: ["latin"] });

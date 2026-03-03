@@ -1,7 +1,7 @@
-import { StarWarsEntities, StarWarsEntity } from "@/types/Root";
-import { ResponseType } from "@/types/ResponseType";
+import type { StarWarsEntities, StarWarsEntity } from "@/types/Root";
+import type { ResponseType } from "@/types/ResponseType";
 import { EntityGridClient } from "./entity-grid-client";
-import { entityConfigs, EntityConfig } from "./entity-config";
+import { entityConfigs } from "./entity-config";
 
 /**
  * Fetches all pages of entities from the SWAPI

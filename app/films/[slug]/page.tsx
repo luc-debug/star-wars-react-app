@@ -1,5 +1,5 @@
 import { DetailView } from "@/components/detail-view";
-import { Film } from "@/types/Film";
+import type { Film } from "@/types/Film";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
 import { resolveLinks } from "@/lib/resolveLinks";

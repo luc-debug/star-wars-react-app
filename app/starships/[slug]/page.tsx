@@ -1,5 +1,5 @@
 import { DetailView } from "@/components/detail-view";
-import { Starship } from "@/types/Starship";
+import type { Starship } from "@/types/Starship";
 import {
   Car,
   Globe,

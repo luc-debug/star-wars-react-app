@@ -2,8 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { StarWarsEntity } from "@/types/Root";
-import { EntityConfig } from "./entity-config";
+import type { StarWarsEntity } from "@/types/Root";
+import type { EntityConfig } from "./entity-config";
 import { makeSlug } from "@/lib/generateStaticParams";
 import * as LucideIcons from "lucide-react";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {entities.map((entity, index) => {
+        {entities.map((entity) => {
           // Coerce the name to a safe string so JSX doesn't try to render `unknown`
           const nameValue = String(
             (entity as Record<string, unknown>)[config.nameKey] ?? "N/A",
@@ -29,9 +29,8 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
           const slug = makeSlug(nameValue);
 
           return (
-            <Link key={index} href={`/${config.entityType}/${slug}`} passHref>
+            <Link key={config.nameKey} href={`/${config.entityType}/${slug}`} passHref>
               <Card
-                key={index}
                 className="hover:border-primary/50 transition-colors"
               >
                 <CardHeader>

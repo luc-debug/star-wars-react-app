@@ -1,7 +1,7 @@
-import { Item } from "@/features/sidebar/components/nav-main";
+import type { Item } from "@/features/sidebar/components/nav-main";
 import { makeSlug } from "@/lib/generateStaticParams";
-import { ResponseType } from "@/types/ResponseType";
-import { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
+import type { ResponseType } from "@/types/ResponseType";
+import type { StarWarsDataModels, StarWarsEntity } from "@/types/Root";
 
 export async function getSideBarData(): Promise<Item[]> {
   let urls: StarWarsDataModels;
@@ -25,7 +25,7 @@ export async function getSideBarData(): Promise<Item[]> {
       if (!r.ok) {
         return {
           title: key.charAt(0).toUpperCase() + key.slice(1),
-          url: "/" + makeSlug(key),
+          url: `/${makeSlug(key)}`,
           items: [],
         } satisfies Item;
       }
@@ -43,19 +43,19 @@ export async function getSideBarData(): Promise<Item[]> {
 
         return {
           title: ("name" in entity ? String(entity.name) : entity.title) ?? "Unknown",
-          url: "/" + makeSlug(key) + "/" + makeSlug(name),
+          url: `/${makeSlug(key)}/${makeSlug(name)}`,
         };
       });
 
       return {
         title: key.charAt(0).toUpperCase() + key.slice(1),
-        url: "/" + makeSlug(key),
+        url: `/${makeSlug(key)}`,
         items,
       } satisfies Item;
     } catch {
       return {
         title: key.charAt(0).toUpperCase() + key.slice(1),
-        url: "/" + makeSlug(key),
+        url: `/${makeSlug(key)}`,
         items: [],
       } satisfies Item;
     }

@@ -1,5 +1,5 @@
 import { DetailView } from "@/components/detail-view";
-import { Species } from "@/types/Species";
+import type { Species } from "@/types/Species";
 import { generateStaticParams as generatePeopleStaticParams } from "@/lib/generateStaticParams";
 import { searchItem } from "@/lib/searchItem";
 import { resolveLinks, resolveLink } from "@/lib/resolveLinks";

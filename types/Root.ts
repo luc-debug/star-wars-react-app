@@ -1,9 +1,9 @@
-import { Film } from "./Film"
-import { People } from "./People"
-import { Planet } from "./Planet"
-import { Species } from "./Species"
-import { Starship } from "./Starship"
-import { Vehicle } from "./Vehicle"
+import type { Film } from "./Film"
+import type { People } from "./People"
+import type { Planet } from "./Planet"
+import type { Species } from "./Species"
+import type { Starship } from "./Starship"
+import type { Vehicle } from "./Vehicle"
 
 export interface StarWarsDataModels {
     people: string

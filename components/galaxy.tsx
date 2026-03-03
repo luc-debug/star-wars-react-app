@@ -342,22 +342,21 @@ export default function Galaxy({
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
   }, [
-    focal,
-    rotation,
-    starSpeed,
-    density,
-    hueShift,
-    disableAnimation,
-    speed,
-    mouseInteraction,
-    glowIntensity,
-    saturation,
-    mouseRepulsion,
-    twinkleIntensity,
-    rotationSpeed,
-    repulsionStrength,
-    autoCenterRepulsion,
-    transparent,
+    focal, 
+    rotation, 
+    starSpeed, 
+    density, 
+    hueShift, 
+    disableAnimation, 
+    speed, 
+    glowIntensity, 
+    saturation, 
+    mouseRepulsion, 
+    twinkleIntensity, 
+    rotationSpeed, 
+    repulsionStrength, 
+    autoCenterRepulsion, 
+    transparent
   ]);
 
   return (
