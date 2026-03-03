@@ -29,11 +29,7 @@ export function EntityGridClient({ entities, config }: EntityGridClientProps) {
 					const slug = makeSlug(nameValue);
 
 					return (
-						<Link
-							key={config.nameKey}
-							href={`/${config.entityType}/${slug}`}
-							passHref
-						>
+						<Link key={slug} href={`/${config.entityType}/${slug}`} passHref>
 							<Card className="hover:border-primary/50 transition-colors">
 								<CardHeader>
 									<CardTitle className="text-xl flex items-center gap-2">
