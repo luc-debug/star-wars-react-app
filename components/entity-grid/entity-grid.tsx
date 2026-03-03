@@ -15,8 +15,9 @@ async function fetchAllEntities(
 	while (nextUrl) {
 		const res = await fetch(nextUrl, {
 			headers: {
-				"User-Agent": "star-wars-databank/1.0 (https://github.com)",
 				Accept: "application/json",
+				"User-Agent":
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0",
 			},
 		});
 
